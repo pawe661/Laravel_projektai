@@ -9,6 +9,18 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+
+    public static function type_function()
+    {
+        $company_type = array(
+            '0' => 'MB',
+            '1' => 'UAB',
+            '2' => 'IĮ',
+            '3' => 'VšĮ'
+        );
+
+        return $company_type;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +39,8 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('companies.create');
+        
+        return view('companies.create', ['company_type'=> CompanyController::type_function()]);
     }
 
     /**
@@ -67,8 +80,8 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Company $company)
-    {
-        return view('companies.edit',['company' => $company]);
+    {   
+        return view('companies.edit',['company' => $company, 'company_type'=> CompanyController::type_function()]);
     }
 
     /**

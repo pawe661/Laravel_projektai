@@ -17,11 +17,17 @@
             <input class="form-control" type='text' name="client_name" placeholder="Client Name"/>
             <input  class="form-control" type='text' name="client_surname" placeholder="Client Surname"/>
             <input  class="form-control" type='text' name="client_username" placeholder="Client Username"/>
-            <select class="form-control"  name="client_compamy_id" placeholder="Client Company_id">
+            <!-- <select class="form-control"  name="client_compamy_id" placeholder="Client Company_id">
                 <option value="" disabled selected>Please select Company ID</option>
                     @for($i = 1; $i < 250; $i++)
                     <option value="{{$i}}">{{ $i }}</option>
                     @endfor
+            </select> -->
+            <select class="form-control"  name="client_compamy_id" placeholder="Client Company_id">
+                <option value="" disabled selected>Please select Company ID</option>
+                @foreach ($companies as $company)
+                    <option value="{{$company->id}}">{{$company->name}}</option>
+                    @endforeach
             </select>
             <input class="form-control" type='text' name="client_image_url" placeholder="Client Image_url"/>
             <input class="form-control" type='text' name="client_phone" placeholder="Client Phone"/>

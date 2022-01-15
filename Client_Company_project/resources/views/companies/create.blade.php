@@ -10,17 +10,16 @@
 </head>
 <body>
     <div class="container">
-    <h1>Clients Create</h1>
+    <h1>Companies Create</h1>
 
         <form method="POST" action="{{route('company.store')}}" >
 
             <input class="form-control" type='text' name="company_name" placeholder="Company Name"/>
                 <select class="form-control" name="company_type" placeholder="Company Type">
-                        <option value="" disabled selected>Please select Company Type</option>
-                        <option value="UAB">UAB</option>
-                        <option value="MB">MB</option>
-                        <option value="IĮ">IĮ</option>
-                        <option value="VšĮ">VšĮ</option>
+                    <option value="" disabled selected>Please select Company Type</option>
+                    @foreach ($company_type as $type)
+                        <option value="{{$type}}" >{{$type}}</option>
+                    @endforeach
                 </select>
             <input  class="form-control" type='text' name="company_description" placeholder="Company Description"/>
 

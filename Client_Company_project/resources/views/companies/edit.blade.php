@@ -17,11 +17,13 @@
         
         <input class="form-control" type='text' name="company_name" value='{{$company->name}}'/>
             <select class="form-control" name="company_type" >
-                    <option value="" disabled selected>{{$company->type}}</option>
-                    <option value="UAB">UAB</option>
-                    <option value="MB">MB</option>
-                    <option value="IĮ">IĮ</option>
-                    <option value="VšĮ">VšĮ</option>
+                @foreach ($company_type as $type)
+                    @if ($company->type == $type)
+                    <option value="{{$type}}" selected>{{$type}}</option>
+                    @else 
+                    <option value="{{$type}}" >{{$type}}</option>
+                    @endif
+                @endforeach
             </select>
         <input  class="form-control" type='text' name="company_description" value='{{$company->description}}'/>
         

@@ -19,10 +19,13 @@
         <input  class="form-control" type='text' name="client_surname" value='{{$client->surname}}'/>
         <input  class="form-control" type='text' name="client_username" value='{{$client->username}}'/>
             <select class="form-control" name="client_compamy_id" >
-                <option value="" disabled selected>{{$client->company_id}}</option>
-                @for($i = 1; $i < 250; $i++)
-                <option value="{{$i}}">{{ $i }}</option>
-                @endfor
+                @foreach ($companies as $company)
+                    @if ($client->company_id == $company->id)
+                    <option value="{{$company->id}}" selected>{{$company->name}}</option>
+                    @else 
+                    <option value="{{$company->id}}">{{$company->name}}</option>
+                    @endif
+                @endforeach
             </select>
         <input class="form-control" type='text' name="client_image_url" value='{{$client->image_url}}'/>
         <input class="form-control" type='text' name="client_phone" value='{{$client->phone}}'/>
