@@ -19,3 +19,19 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('about');
 });
+
+Route::prefix('authors')->group(function(){
+
+    // Index./authors
+    Route::get('','App\Http\Controllers\AuthorController@index')->name('author.index');
+    Route::get('create','App\Http\Controllers\AuthorController@create')->name('author.create');
+    Route::post('store','App\Http\Controllers\AuthorController@store')->name('author.store');
+    //SU STORE turi buti POST metodas
+
+    // Edit form
+    Route::get('edit/{author}','App\Http\Controllers\AuthorController@edit')->name('author.edit');
+    //Update po Edit
+    Route::post('update/{author}','App\Http\Controllers\AuthorController@update')->name('author.update');
+
+}
+);
