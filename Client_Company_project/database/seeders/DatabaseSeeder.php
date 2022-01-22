@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Client;
+use App\Models\Company;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // Galima rašyti arba tą patį kur Modelio Seeder arba kviesti iš juos
+        // Client :: factory()->count(30)->create();
+        $this->call([
+            CompanySeeder::class,
+            ClientSeeder::class
+        ]);
     }
 }

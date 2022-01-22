@@ -110,7 +110,14 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
+        
+        $clients = $company->companyClients; // clientu masyvas
+
+        if(count($clients) != 0) {
+            return redirect()->route('company.index')->with('error_message', 'Delete is not possible because company has clients');
+        }
+        
         $company->delete();
-        return redirect()->route('company.index');
+        return redirect()->route('company.index')->with('success_message', 'Everything is fine');
     }
 }

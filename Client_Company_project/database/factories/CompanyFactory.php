@@ -14,7 +14,9 @@ class CompanyFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->company(),
+            'type' => 'UAB',
+            'description' => $this->faker->paragraph(15)
         ];
     }
 }

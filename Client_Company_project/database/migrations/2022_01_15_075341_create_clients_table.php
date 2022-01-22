@@ -18,9 +18,11 @@ class CreateClientsTable extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('username');
-            $table->bigInteger('company_id');
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies');
+            
             $table->string('image_url');
-            $table->string('phone');
+            $table->integer('phone');
             $table->timestamps();
         });
     }
