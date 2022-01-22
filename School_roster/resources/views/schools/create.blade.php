@@ -6,29 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Students</title>
+    <title>Schools</title>
 </head>
 <body>
     <div class="container">
-    <h1>Create Student</h1>
+    <h1>Create School</h1>
+        <form method="POST" action="{{route('school.store')}}" >
 
-        <form method="POST" action="{{route('student.store')}}" >
-            <input class="form-control" type='text' name="student_name" placeholder="Student Name"/>
-            <input class="form-control" type='text' name="student_surname" placeholder="Student Surname"/>
 
-                <select class="form-control" name="student_group_id" placeholder="Student Group">
-                    <option value="" disabled selected>Please select Group to attend</option>
-                    @foreach ($groups as $group)
-                        <option value="{{$group -> id}}" >{{$group->name}}</option>
-                    @endforeach
-                </select>
+            <input class="form-control" type='text' name="school_name" placeholder="School name"/>
+            <input class="form-control" type='text' name="school_description" placeholder="School description"/>
+            <input class="form-control" type='text' name="school_place" placeholder="School location"/>
+            <input class="form-control" type='text' name="school_phone" placeholder="School phone number"/>
 
-            <input  class="form-control" type='text' name="student_image_url" placeholder="Student Image"/>
 
             @csrf
 
             <button class="btn btn-primary" type='submit'>Add</button>
-            <a class="btn btn-secondary" href="{{route('student.index')}}">Back</a>
+            <a class="btn btn-secondary" href="{{route('school.index')}}">Back</a>
         </form>
 
     </div>

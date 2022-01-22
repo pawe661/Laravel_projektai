@@ -13,8 +13,8 @@
         <h1>Edit Student</h1>
 
         <form method="POST" action="{{route('student.update', [$student])}}" >
-            <input class="form-control" type='text' name="student_name" value='{{$student->name}}'/>
-            <input class="form-control" type='text' name="student_surname" value='{{$student->surname}}'/>
+            <input class="form-control" type='text' name="student_name" value='{{$student->name}}' placeholder="Student Name"/>
+            <input class="form-control" type='text' name="student_surname" value='{{$student->surname}}' placeholder="Student Surname"/>
 
             <select class="form-control" name="student_group_id" placeholder="Student Groups">
                     @foreach ($groups as $group)

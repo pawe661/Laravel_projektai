@@ -6,33 +6,60 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Students</title>
+    <title>Schools</title>
 </head>
 <body>
-    <div class="container">
-        
-    <h1>Students Show</h1>
+<div class="container">
+    <h1>School Show</h1>
 
-    <h2> {{$student->name}} {{$student->surname}} </h2>
-    
-        <p>Id : {{$student->id}}</p>
-        <p>Name : {{$student->name}}</p>
-        <p>Surname : {{$student->surname}}</p>
+    <h2> {{$school->name}}</h2>
+        <p>Id : {{$school->id}}</p>
+        <p>School Name : {{$school->name}}</p>
+        <p>School Description : {{$school->description}}</p>
+        <p>School Location : {{$school->place}}</p>
+        <p>School Phone Number : {{$school->phone}}</p>
+ 
+        @if(count($school -> schoolGroups) == 0) 
+            <p>School has no groups </p>
+        @else 
+            <table class="table table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Group Name</th>
+                    <th>Group Description</th>
+                    <th>Group Difficulty</th>
+                    <th>School</th>
+                    <th>Actions</th>
+                </tr>
+            @foreach ($school->schoolGroups as $group)
+                <tr>
+                    <td>{{$group->id}}</td>
+                    <td>{{$group->name}}</td>
+                    <td>{{$group->description}}</td>
 
-        @foreach ($groups as $group)
-            @if($student->group_id == $group ->id)
-                <p>Student group :{{$group->name}}</p>
-            @endif
-        @endforeach
+                    @foreach ($difficulties as $difficulty)
+                        @if($group->difficulty_id == $difficulty ->id)
+                            <td>{{$difficulty->difficulty}}</td>
+                        @endif
+                    @endforeach
 
-        <p>Student image : {{$student->image_url}}</p>
+                    <td>{{$school->name}}</td>
 
-                    
-        <form method="post" action="{{route('student.destroy', [$student])}}">
+                    <td>
+                        <form method="post" action="{{route('group.destroy', [$group])}}">
+                            @csrf
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+            </table>
+        @endif    
+        <form method="post" action="{{route('school.destroy', [$group])}}">
             @csrf
-            <button class="btn btn-danger" type="submit">Delete</button>
+            <button class="btn btn-danger" type="submit">Delete School</button>
         </form>
-        <a class="btn btn-secondary" href="{{route('student.index')}}">Back</a>
+        <a class="btn btn-secondary" href="{{route('school.index')}}">Back</a>
 
 
 

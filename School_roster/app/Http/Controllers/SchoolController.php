@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\School;
+use App\Models\Difficulty;
 use App\Http\Requests\StoreSchoolRequest;
 use App\Http\Requests\UpdateSchoolRequest;
 
@@ -55,7 +56,7 @@ class SchoolController extends Controller
 
         $school->save();
 
-        return redirect()->route('schools.index');
+        return redirect()->route('school.index');
     }
 
     /**
@@ -66,7 +67,8 @@ class SchoolController extends Controller
      */
     public function show(School $school)
     {
-        return view('schools.show', ['school'=>$school]);
+        $difficulties = Difficulty::all();
+        return view('schools.show', ['school'=>$school,'difficulties'=>$difficulties]);
     }
 
     /**
@@ -87,7 +89,7 @@ class SchoolController extends Controller
      * @param  \App\Models\School  $school
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSchoolRequest $request, School $school)
+    public function update(Request $request, School $school)
     {
         $school->name = $request->school_name;
         $school->description = $request->school_description;
@@ -96,7 +98,7 @@ class SchoolController extends Controller
 
         $school->save();
 
-        return redirect()->route('schools.index');
+        return redirect()->route('school.index');
     }
 
     /**

@@ -13,8 +13,8 @@
         <h1>Edit Attendance Group</h1>
 
         <form method="POST" action="{{route('group.update', [$group])}}" >
-            <input class="form-control" type='text' name="group_name" placeholder='{{$group->name}}'/>
-            <input class="form-control" type='text' name="group_description" placeholder='{{$group->description}}'/>
+            <input class="form-control" type='text' name="group_name" value='{{$group->name}}' placeholder="Group name"/>
+            <input class="form-control" type='text' name="group_description" value='{{$group->description}}' placeholder="Group description"/>
 
                 <select class="form-control" name="group_difficulty_id" placeholder="Group difficulty">
                     @foreach ($difficulties as $difficulty)
