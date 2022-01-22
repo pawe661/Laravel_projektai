@@ -6,35 +6,34 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Clients</title>
+    <title>Attendance Groups</title>
 </head>
 <body>
-    <div class="container">
-    <h1>Clients Create</h1>
+<div class="container">
+    <h1>Create Attendance Group</h1>
+        <form method="POST" action="{{route('group.store')}}" >
+            <input class="form-control" type='text' name="group_name" placeholder="Group name"/>
+            <input class="form-control" type='text' name="group_description" placeholder="Group description"/>
 
-        <form method="POST" action="{{route('client.store')}}" >
-
-            <input class="form-control" type='text' name="client_name" placeholder="Client Name"/>
-            <input  class="form-control" type='text' name="client_surname" placeholder="Client Surname"/>
-            <input  class="form-control" type='text' name="client_username" placeholder="Client Username"/>
-            <!-- <select class="form-control"  name="client_compamy_id" placeholder="Client Company_id">
-                <option value="" disabled selected>Please select Company ID</option>
-                    @for($i = 1; $i < 250; $i++)
-                    <option value="{{$i}}">{{ $i }}</option>
-                    @endfor
-            </select> -->
-            <select class="form-control"  name="client_compamy_id" placeholder="Client Company_id">
-                <option value="" disabled selected>Please select Company ID</option>
-                @foreach ($companies as $company)
-                    <option value="{{$company->id}}">{{$company->name}}</option>
+                <select class="form-control" name="group_difficulty_id" placeholder="Group difficulty">
+                    <option value="" disabled selected>Please select difficulty level</option>
+                    @foreach ($difficulties as $difficulty)
+                        <option value="{{$difficulty -> id}}" >{{$difficulty->difficulty}}</option>
                     @endforeach
-            </select>
-            <input class="form-control" type='text' name="client_image_url" placeholder="Client Image_url"/>
-            <input class="form-control" type='text' name="client_phone" placeholder="Client Phone"/>
+                </select>
+
+                <select class="form-control" name="group_school_id" placeholder="School">
+                    <option value="" disabled selected>Please select School</option>
+                    @foreach ($schools as $school)
+                        <option value="{{$school -> id}}" >{{$school->name}}</option>
+                    @endforeach
+                </select>
+
+
             @csrf
 
             <button class="btn btn-primary" type='submit'>Add</button>
-            <a class="btn btn-secondary" href="{{route('client.index')}}">Back</a>
+            <a class="btn btn-secondary" href="{{route('group.index')}}">Back</a>
         </form>
 
     </div>

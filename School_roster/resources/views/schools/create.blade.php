@@ -10,29 +10,26 @@
 </head>
 <body>
     <div class="container">
-        <h1>Edit Student</h1>
+    <h1>Create Student</h1>
 
-        <form method="POST" action="{{route('student.update', [$student])}}" >
-            <input class="form-control" type='text' name="student_name" value='{{$student->name}}'/>
-            <input class="form-control" type='text' name="student_surname" value='{{$student->surname}}'/>
+        <form method="POST" action="{{route('student.store')}}" >
+            <input class="form-control" type='text' name="student_name" placeholder="Student Name"/>
+            <input class="form-control" type='text' name="student_surname" placeholder="Student Surname"/>
 
-            <select class="form-control" name="student_group_id" placeholder="Student Groups">
+                <select class="form-control" name="student_group_id" placeholder="Student Group">
+                    <option value="" disabled selected>Please select Group to attend</option>
                     @foreach ($groups as $group)
-                        @if ($group->id == $student->group_id)
-                        <option value="{{$group -> id}}" selected>{{$group->name}}</option>
-                        @else 
                         <option value="{{$group -> id}}" >{{$group->name}}</option>
-                        @endif
                     @endforeach
                 </select>
 
-            <input  class="form-control" type='text' name="student_image_url" value='{{$student->image_url}}'/>
-            
-                
+            <input  class="form-control" type='text' name="student_image_url" placeholder="Student Image"/>
+
             @csrf
-            <button class="btn btn-primary" type='submit'>Edit</button>
+
+            <button class="btn btn-primary" type='submit'>Add</button>
             <a class="btn btn-secondary" href="{{route('student.index')}}">Back</a>
-        </form> 
+        </form>
 
     </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

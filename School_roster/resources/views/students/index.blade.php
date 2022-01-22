@@ -50,7 +50,7 @@
                 <td>{{$group->name}}</td>
                 @endif
             @endforeach
-            <td>{{$student->image_url}}</td>
+            <td><img src='{{$student->image_url}}' alt='{{$student->name}}' width="100" height="100"/></td>
 
             <td>
                 <a class="btn btn-primary" href="{{route('student.edit', [$student])}}">Edit</a>

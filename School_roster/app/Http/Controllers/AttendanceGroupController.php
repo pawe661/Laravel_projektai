@@ -21,7 +21,9 @@ class AttendanceGroupController extends Controller
     public function index()
     {
         $groups = AttendanceGroup::all();
-        return view('groups.index',['groups'=> $groups]);
+        $difficulties = Difficulty::all();
+        $schools = School::all();
+        return view('groups.index',['groups' => $groups, 'difficulties'=>$difficulties,'schools'=>$schools]);
     }
 
     /**
@@ -61,7 +63,7 @@ class AttendanceGroupController extends Controller
 
         $group->save();
 
-        return redirect()->route('groups.index');
+        return redirect()->route('group.index');
     }
 
     /**
@@ -72,7 +74,9 @@ class AttendanceGroupController extends Controller
      */
     public function show(AttendanceGroup $group)
     {
-        return view('groups.show', ['group'=>$group]);
+        $difficulties = Difficulty::all();
+        $schools = School::all();
+        return view('groups.show', ['group' => $group, 'difficulties'=>$difficulties,'schools'=>$schools]);
     }
 
     /**
@@ -104,7 +108,7 @@ class AttendanceGroupController extends Controller
 
         $group->save();
 
-        return redirect()->route('groups.index');
+        return redirect()->route('group.index');
     }
 
     /**
@@ -118,11 +122,11 @@ class AttendanceGroupController extends Controller
         $students = $group->groupStudents; 
 
         if(count($students) != 0) {
-            return redirect()->route('groups.index')->with('error_message', 'Delete is not possible because group has students in it');
+            return redirect()->route('group.index')->with('error_message', 'Delete is not possible because group has students in it');
         }
 
         $group->delete();
-        return redirect()->route('groups.index')->with('success_message', 'Everything is fine');
+        return redirect()->route('group.index')->with('success_message', 'Everything is fine');
 
     }
 }

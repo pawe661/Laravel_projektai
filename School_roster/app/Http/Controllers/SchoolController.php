@@ -110,11 +110,11 @@ class SchoolController extends Controller
         $groups = $school->schoolGroups; 
 
         if(count($groups) != 0) {
-            return redirect()->route('schools.index')->with('error_message', 'Delete is not possible because school has groups in it');
+            return redirect()->route('school.index')->with('error_message', 'Delete is not possible because school has groups in it');
         }
 
         $school->delete();
-        return redirect()->route('schools.index')->with('success_message', 'Everything is fine');
+        return redirect()->route('school.index')->with('success_message', 'Everything is fine');
 
     }
 }
