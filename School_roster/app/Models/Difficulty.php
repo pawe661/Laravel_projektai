@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class School extends Model
+class Difficulty extends Model
 {
     use HasFactory;
 
-    public function schoolGroups() {
-        return $this->hasMany(AttendanceGroup::class, 'school_id', 'id');
+    public function dificultyGroups() {
+        return $this->hasMany(AttendanceGroup::class, 'difficulty_id', 'id');
     }
 }
