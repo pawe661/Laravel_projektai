@@ -37,6 +37,7 @@
             <th>Group Description</th>
             <th>Group Difficulty</th>
             <th>School</th>
+            <th>Student Count</th>
             <th>Actions</th>
         </tr>
 
@@ -57,6 +58,8 @@
                     <td>{{$school->name}}</td>
                 @endif
             @endforeach
+
+            <td>{{count($group->groupStudents)}}</td>
 
             <td>
                 <a class="btn btn-primary" href="{{route('group.edit', [$group])}}">Edit</a>

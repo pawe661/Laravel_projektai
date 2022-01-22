@@ -37,6 +37,7 @@
                 <th>School Description</th>
                 <th>School Location</th>
                 <th>School Phone Number</th>
+                <th>Group Count</th>
                 <th>Actions</th>
             </tr>
 
@@ -47,6 +48,8 @@
                 <td>{{$school->description}}</td>
                 <td>{{$school->place}}</td>
                 <td>{{$school->phone}}</td>
+
+                <td>{{count($school->schoolGroups)}}</td>
 
                 <td>
                     <a class="btn btn-primary" href="{{route('school.edit', [$school])}}">Edit</a>
