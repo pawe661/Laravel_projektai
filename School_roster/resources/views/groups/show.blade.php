@@ -16,17 +16,8 @@
         <p>Id : {{$group->id}}</p>
         <p>Group Name : {{$group->name}}</p>
         <p>Group Description : {{$group->description}}</p>
-        
-        @foreach ($difficulties as $difficulty)
-            @if($group->difficulty_id == $difficulty ->id)
-                <p>Group Difficulty: {{$difficulty->difficulty}}</p>
-            @endif
-        @endforeach
-        @foreach ($schools as $school)
-            @if($group->difficulty_id == $school ->id)
-                <p>School: {{$school->name}}</p>
-            @endif
-        @endforeach
+        <p>Group Difficulty: {{$difficulties->difficulty}}</p>
+        <p>School: {{$schools->name}}</p>
 
         @if(count($group -> groupStudents) == 0) 
             <p>Group has no studenst </p>

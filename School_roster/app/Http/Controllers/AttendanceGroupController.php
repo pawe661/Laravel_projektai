@@ -74,8 +74,8 @@ class AttendanceGroupController extends Controller
      */
     public function show(AttendanceGroup $group)
     {
-        $difficulties = Difficulty::all();
-        $schools = School::all();
+        $difficulties = $group -> groupDifficulty;
+        $schools = $group -> groupSchool;
         return view('groups.show', ['group' => $group, 'difficulties'=>$difficulties,'schools'=>$schools]);
     }
 
@@ -87,8 +87,8 @@ class AttendanceGroupController extends Controller
      */
     public function edit(AttendanceGroup $group)
     {
-        $difficulties = Difficulty::all();
-        $schools = School::all();
+        $difficulties = $group -> groupDifficulty;
+        $schools = $group -> groupSchool;
         return view('groups.edit',['group' => $group, 'difficulties'=>$difficulties,'schools'=>$schools]);
     }
 
