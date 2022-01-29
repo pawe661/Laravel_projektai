@@ -24,8 +24,11 @@ php artisan ui vue --auth
 npm install
 
 <!-- compiler -->
-<!-- Jeigu Compiler meta error pakeisti package.json ir ištrinti ... -->
 npm run dev
 
+<!-- Jeigu Compiler meta error pakeisti package.json "vue-loader": "^15.9.8" 
+ir ištrinti package-lock.json ir node_modules aplanką-->
+npm install
+npm run dev
 
 
