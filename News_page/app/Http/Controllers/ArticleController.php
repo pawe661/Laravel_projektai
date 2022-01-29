@@ -6,6 +6,8 @@ use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 
+use Illuminate\Http\Request;
+
 class ArticleController extends Controller
 {
     /**
@@ -15,7 +17,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        $articles = Article::all();
+        return view('articles.index',['articles' => $articles]);
     }
 
     /**
@@ -25,7 +28,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        return view('articles.create');
     }
 
     /**
@@ -34,9 +37,22 @@ class ArticleController extends Controller
      * @param  \App\Http\Requests\StoreArticleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreArticleRequest $request)
+    public function store(Request $request)
     {
-        //
+
+
+        $article = new Article;
+
+        $article->title = $request->article_title;
+        $article->excerpt = $request->article_excerpt;
+        $article->description = $request->article_description;
+        $article->author = $request->article_author;
+        $article->image_id = $request->article_image_id;
+        $article->category_id = $request->article_dcategory_id;
+
+        $article->save();
+
+        return redirect()->route('article.index');
     }
 
     /**
@@ -47,7 +63,9 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+        $categories = $article -> articlesArticlecategory;
+        $images = $article -> articleImages;
+        return view('articles.show',['article' => $article, 'categories'=>$categories,'images'=>$images]);
     }
 
     /**
@@ -58,7 +76,9 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        //
+        $categories = $article -> articlesArticlecategory;
+        $images = $article -> articleImages;
+        return view('articles.edit',['article' => $article, 'categories'=>$categories,'images'=>$images]);
     }
 
     /**
@@ -68,9 +88,18 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(Request $request, Article $article)
     {
-        //
+        $article->title = $request->article_title;
+        $article->excerpt = $request->article_excerpt;
+        $article->description = $request->article_description;
+        $article->author = $request->article_author;
+        $article->image_id = $request->article_image_id;
+        $article->category_id = $request->article_dcategory_id;
+
+        $article->save();
+
+        return redirect()->route('article.index');
     }
 
     /**
@@ -81,6 +110,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        $article->delete();
+        return redirect()->route('article.index');
     }
 }
