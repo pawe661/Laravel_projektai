@@ -60,7 +60,7 @@ class ArticleCategoryController extends Controller
      */
     public function show(ArticleCategory $articleCategory)
     {
-        $articles = $articleCategory -> articlecategoryArticles;
+        $articles = $articleCategory -> articlesArticlecategory;
         return view('articlecategory.show',['articleCategory' => $articleCategory, 'articles'=>$articles]);
     }
 
