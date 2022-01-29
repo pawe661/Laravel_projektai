@@ -63,7 +63,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $categories = $article -> articlesArticlecategory;
+        $categories = $article -> articlecategoryArticles;
         $images = $article -> articleImages;
         return view('articles.show',['article' => $article, 'categories'=>$categories,'images'=>$images]);
     }
@@ -76,7 +76,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        $categories = $article -> articlesArticlecategory;
+        $categories = $article -> articlecategoryArticles;
         $images = $article -> articleImages;
         return view('articles.edit',['article' => $article, 'categories'=>$categories,'images'=>$images]);
     }

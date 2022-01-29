@@ -9,7 +9,7 @@ class ArticleCategory extends Model
 {
 
     use HasFactory;
-    public function articlecategoryArticles() {
+    public function articlesArticlecategory() {
         return $this->hasMany(Article::class, 'category_id', 'id');
     }
 }

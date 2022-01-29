@@ -17,7 +17,7 @@ class ArticleImageFactory extends Factory
 
             'alt' => $this->faker->words(3, true),
             // 'src' => $this ->faker->words(2, true),
-            'src' => $this ->faker->image(null, 360, 360, 'animals', true),
+            'src' => $this ->faker->image('public\storage\images', 360, 360, 'animals', true),
             'width' => $this->faker->numberBetween(100,300),
             'height' => $this->faker->numberBetween(100,300),
             'class' => $this->faker->words(1, true),

@@ -11,9 +11,9 @@ class Article extends Model
     // $table->unsignedBigInteger('image_id');
     // $table->foreign('image_id')->references('id')->on('article_images');
     public function articleImages() {
-        return $this->hasOne(ArticleImage::class, 'image_id', 'id');
+        return $this->belongsTo(ArticleImage::class, 'image_id', 'id');
     }
-    public function articlesArticlecategory() {
+    public function articlecategoryArticles() {
         return $this->belongsTo(ArticleCategory::class, 'category_id', 'id');
     }
 }

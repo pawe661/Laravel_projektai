@@ -11,6 +11,6 @@ class ArticleImage extends Model
     use HasFactory;
 
     public function imagesArticle() {
-        return $this->belongsTo(Article::class, 'image_id', 'id');
+        return $this->hasOne(Article::class, 'image_id', 'id');
     }
 }
