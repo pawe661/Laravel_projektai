@@ -65,6 +65,7 @@ class ArticleController extends Controller
     {
         $categories = $article -> articlecategoryArticles;
         $images = $article -> articleImages;
+
         return view('articles.show',['article' => $article, 'categories'=>$categories,'images'=>$images]);
     }
 
