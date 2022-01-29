@@ -1,42 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+@extends('layouts.app')
 
-    <title>Articles</title>
-</head>
-<body>
+@section('content')
 <div class="container">
-    <h1>Create Articles</h1>
-        <form method="POST" action="{{route('group.store')}}" >
-            <input class="form-control" type='text' name="group_name" placeholder="Group name"/>
-            <input class="form-control" type='text' name="group_description" placeholder="Group description"/>
+    <h1>Create Article</h1>
+        <form method="POST" action="{{route('article.store')}}" >
 
-                <select class="form-control" name="group_difficulty_id" placeholder="Group difficulty">
-                    <option value="" disabled selected>Please select difficulty level</option>
-                    @foreach ($difficulties as $difficulty)
-                        <option value="{{$difficulty -> id}}" >{{$difficulty->difficulty}}</option>
-                    @endforeach
-                </select>
+        <!-- $article->title = $request->article_title;
+        $article->excerpt = $request->article_excerpt;
+        $article->description = $request->article_description;
+        $article->author = $request->article_author;
+        $article->image_id = $request->article_image_id;
+        $article->category_id = $request->article_dcategory_id; -->
+            <input class="form-control" type='text' name="article_title" placeholder="Article title"/>
+            <input class="form-control" type='text' name="article_excerpt" placeholder="Article excerpt"/>
+            <input class="form-control" type='text' name="article_description" placeholder="Article description"/>
+            <input class="form-control" type='text' name="article_author" placeholder="Article author"/>
 
-                <select class="form-control" name="group_school_id" placeholder="School">
-                    <option value="" disabled selected>Please select School</option>
-                    @foreach ($schools as $school)
-                        <option value="{{$school -> id}}" >{{$school->name}}</option>
+            
+            <select class="form-control" name="article_image_id" placeholder="Article image">
+                <option value="" disabled selected>Please select Category</option>
+                    @foreach ($images as $image)
+                        <option value="{{$image -> id}}" >{{$image->alt}}</option>
                     @endforeach
-                </select>
+            </select>
+
+            <select class="form-control" name="article_category_id" placeholder="Article category">
+                <option value="" disabled selected>Please select Category</option>
+                    @foreach ($categories as $category)
+                        <option value="{{$category -> id}}" >{{$category->title}}</option>
+                    @endforeach
+            </select>
 
 
             @csrf
 
             <button class="btn btn-primary" type='submit'>Add</button>
-            <a class="btn btn-secondary" href="{{route('group.index')}}">Back</a>
+            <a class="btn btn-secondary" href="{{route('article.index')}}">Back</a>
         </form>
-
     </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</body>
-</html>
+    @endsection

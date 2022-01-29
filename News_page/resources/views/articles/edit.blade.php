@@ -1,41 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+@extends('layouts.app')
 
-    <title>Articles</title>
-</head>
-<body>
+@section('content')
     <div class="container">
-        <h1>Edit Articles</h1>
+        <h1>Edit Article</h1>
 
-        <form method="POST" action="{{route('group.update', [$group])}}" >
-            <input class="form-control" type='text' name="group_name" value='{{$group->name}}' placeholder="Group name"/>
-            <input class="form-control" type='text' name="group_description" value='{{$group->description}}' placeholder="Group description"/>
+        <form method="POST" action="{{route('article.update', [$article])}}" >
+            <input class="form-control" type='text' name="{{$article->title}}" placeholder="Article title"/>
+            <input class="form-control" type='text' name="{{$article->excerpt}}" placeholder="Article excerpt"/>
+            <input class="form-control" type='text' name="{{$article->description}}" placeholder="Article description"/>
+            <input class="form-control" type='text' name="{{$article->author}}" placeholder="Article author"/>
 
-                <select class="form-control" name="group_difficulty_id" placeholder="Group difficulty">
-                    @foreach ($difficulties as $difficulty)
-                        @if ($difficulty->id == $group->difficulty_id)
-                        <option value="{{$difficulty -> id}}" selected>{{$difficulty->difficulty}}</option>
+                <select class="form-control" name="article_image_id" placeholder="Article image">
+                    @foreach ($articles->articleImages as $image)
+                        @if ($image->id == $article->image_id)
+                        <option value="{{$image -> id}}" selected>{{$image->alt}}</option>
                         @else 
-                        <option value="{{$difficulty -> id}}" >{{$difficulty->difficulty}}</option>
+                        <option value="{{$image -> id}}" >{{$image->alt}}</option>
+                        @endif
+                    @endforeach
+                </select>
+    
+                <select class="form-control" name="article_category_id" placeholder="Article category">
+                    @foreach ($categories as $category)
+                        @if ($category->id == $article->category_id)
+                        <option value="{{$category -> id}}" selected>{{$category->title}}</option>
+                        @else 
+                        <option value="{{$category -> id}}" >{{$category->title}}</option>
                         @endif
                     @endforeach
                 </select>
 
-                <select class="form-control" name="group_school_id" placeholder="School">
-                    @foreach ($schools as $school)
-                        @if ($school->id == $group->school_id)
-                        <option value="{{$school -> id}}" selected>{{$school->name}}</option>
-                        @else 
-                        <option value="{{$school -> id}}" >{{$school->name}}</option>
-                        @endif
-                    @endforeach
-                </select>
+>
 
+            <select class="form-control" name="article_category_id" placeholder="Article category">
+                <option value="" disabled selected>Please select Category</option>
+                    @foreach ($categories as $category)
+                        <option value="{{$category -> id}}" >{{$category->title}}</option>
+                    @endforeach
+            </select>
             @csrf
 
             <button class="btn btn-primary" type='submit'>Add</button>
@@ -43,6 +45,4 @@
         </form>
 
     </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</body>
-</html>
+    @endsection

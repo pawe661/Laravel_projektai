@@ -55,7 +55,7 @@
                 width='{{$article->articleImages->width}}' height='{{$article->articleImages->height}}' />
            </td>
             
-            <td>{{$article->author}}</td>
+            <td>{{$article->articlecategoryArticles->title}}</td>
             
 
 

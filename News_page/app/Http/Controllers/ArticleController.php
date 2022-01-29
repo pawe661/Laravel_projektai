@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\ArticleImage;
+use App\Models\ArticleCategory;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 
@@ -28,7 +30,9 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('articles.create');
+        $categories = ArticleCategory::all();
+        $images = ArticleImage::all();
+        return view('articles.create', ['categories' => $categories, 'images'=> $images]);
     }
 
     /**
@@ -48,7 +52,7 @@ class ArticleController extends Controller
         $article->description = $request->article_description;
         $article->author = $request->article_author;
         $article->image_id = $request->article_image_id;
-        $article->category_id = $request->article_dcategory_id;
+        $article->category_id = $request->article_category_id;
 
         $article->save();
 
@@ -96,7 +100,7 @@ class ArticleController extends Controller
         $article->description = $request->article_description;
         $article->author = $request->article_author;
         $article->image_id = $request->article_image_id;
-        $article->category_id = $request->article_dcategory_id;
+        $article->category_id = $request->article_category_id;
 
         $article->save();
 
