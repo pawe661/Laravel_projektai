@@ -12,49 +12,25 @@
     <div class="container">
     <h1>Articles Show</h1>
 
-    <h2> {{$group->name}}</h2>
-        <p>Id : {{$group->id}}</p>
-        <p>Group Name : {{$group->name}}</p>
-        <p>Group Description : {{$group->description}}</p>
-        <p>Group Difficulty: {{$difficulties->difficulty}}</p>
-        <p>School: {{$schools->name}}</p>
+    <h2> {{$article->title}}</h2>
+        <p>Id : {{$article->id}}</p>
+        <p>Article Excerpt : {{$article->excerpt}}</p>
+        <p>Article Description : {{$article->description}}</p>
+        <p>Article Author : {{$article->author}}</p>
+        <p>Article Image: 
+            <img id='image{{$article->articleImages->id}}' class='{{$article->articleImages->class}}' 
+                src='{{asset($article->articleImages->src)}}' alt='{{$article->articleImages->alt}}' 
+                width='{{$article->articleImages->width}}' height='{{$article->articleImages->height}}' 
+                />
+        </p> 
+        <p>Article Categories : {{$article -> articlecategoryArticles -> title}}</p>
 
-        @if(count($group -> groupStudents) == 0) 
-            <p>Group has no studenst </p>
-        @else 
-            <table class="table table-striped">
-                <tr>
-                    <th>Id</th>
-                    <th>Student Name</th>
-                    <th>Student Surname</th>
-                    <th>Student AttendanceGroup</th>
-                    <th>Student Image</th>
-                    <th>Actions</th>
-                </tr>
-            @foreach ($group->groupStudents as $student)
-                <tr>
-                    <td>{{$student->id}}</td>
-                    <td>{{$student->name}}</td>
-                    <td>{{$student->surname}}</td>
-                    <td>{{$group->name}}</td>
-
-                    <td><img src='{{$student->image_url}}' alt='{{$student->name}}' width="100" height="100"/></td>
-
-                    <td>
-                        <form method="post" action="{{route('student.destroy', [$student])}}">
-                        @csrf
-                            <button class="btn btn-danger" type="submit">Delete Student</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-            </table>
-        @endif    
-        <form method="post" action="{{route('group.destroy', [$group])}}">
+   
+        <form method="post" action="{{route('article.destroy', [$article])}}">
             @csrf
-            <button class="btn btn-danger" type="submit">Delete Group</button>
+            <button class="btn btn-danger" type="submit">Delete Article</button>
         </form>
-        <a class="btn btn-secondary" href="{{route('group.index')}}">Back</a>
+        <a class="btn btn-secondary" href="{{route('article.index')}}">Back</a>
 
 
 

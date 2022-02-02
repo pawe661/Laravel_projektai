@@ -67,10 +67,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $categories = $article -> articlecategoryArticles;
-        $images = $article -> articleImages;
-
-        return view('articles.show',['article' => $article, 'categories'=>$categories,'images'=>$images]);
+        return view('articles.show',['article' => $article]);
     }
 
     /**
@@ -81,8 +78,8 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        $categories = $article -> articlecategoryArticles;
-        $images = $article -> articleImages;
+        $categories = ArticleCategory::all();
+        $images = ArticleImage::all();
         return view('articles.edit',['article' => $article, 'categories'=>$categories,'images'=>$images]);
     }
 

@@ -5,12 +5,6 @@
     <h1>Create Article</h1>
         <form method="POST" action="{{route('article.store')}}" >
 
-        <!-- $article->title = $request->article_title;
-        $article->excerpt = $request->article_excerpt;
-        $article->description = $request->article_description;
-        $article->author = $request->article_author;
-        $article->image_id = $request->article_image_id;
-        $article->category_id = $request->article_dcategory_id; -->
             <input class="form-control" type='text' name="article_title" placeholder="Article title"/>
             <input class="form-control" type='text' name="article_excerpt" placeholder="Article excerpt"/>
             <input class="form-control" type='text' name="article_description" placeholder="Article description"/>

@@ -24,12 +24,6 @@
     <a class="btn btn-primary" href="{{route('article.create')}}">Create new Article</a>
     <table class="table table-striped">
         <tr>
-        <!-- $article->title = $request->article_title;
-        $article->excerpt = $request->article_excerpt;
-        $article->description = $request->article_description;
-        $article->author = $request->article_author;
-        $article->image_id = $request->article_image_id;
-        $article->category_id = $request->article_dcategory_id; -->
             <th>Id</th>
             <th>Article Title</th>
             <th>Article Excerpt</th>
