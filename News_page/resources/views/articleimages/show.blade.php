@@ -6,55 +6,71 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Attendance Groups</title>
+    <title>Articles</title>
 </head>
 <body>
     <div class="container">
-    <h1>Attendance Groups Show</h1>
+    <h1>Articles Show</h1>
 
-    <h2> {{$group->name}}</h2>
-        <p>Id : {{$group->id}}</p>
-        <p>Group Name : {{$group->name}}</p>
-        <p>Group Description : {{$group->description}}</p>
-        <p>Group Difficulty: {{$difficulties->difficulty}}</p>
-        <p>School: {{$schools->name}}</p>
-
-        @if(count($group -> groupStudents) == 0) 
-            <p>Group has no studenst </p>
+    <h2> {{$articleImage->alt}}</h2>
+        <p>Id : {{$articleImage->id}}</p>
+        <p>Article Image Atl text : {{$articleImage->excerpt}}</p>
+        <p>Article Image: 
+            <img id='image{{$articleImage->id}}' class='{{$articleImage->class}}' 
+                src='{{asset($articleImage->src)}}' alt='{{$articleImage->alt}}' 
+                width='{{$articleImage->width}}' height='{{$articleImage->height}}' 
+                />
+        </p> 
+        <p>Article Image Width : {{$articleImage->width}}</p>
+        <p>Article Image Height : {{$articleImage->height}}</p>
+        <th>Article Image Clas : {{$articleImage->class}}</th> 
+        @if(($articleImage->imagesArticle )== false) 
+            <p>School has no groups </p>
         @else 
-            <table class="table table-striped">
+        <table class="table table-striped">
                 <tr>
                     <th>Id</th>
-                    <th>Student Name</th>
-                    <th>Student Surname</th>
-                    <th>Student AttendanceGroup</th>
-                    <th>Student Image</th>
+                    <th>Article Title</th>
+                    <th>Article Excerpt</th>
+                    <th>Article Description</th>
+                    <th>Article Author</th>
+                    <th>Article Categories</th>
                     <th>Actions</th>
                 </tr>
-            @foreach ($group->groupStudents as $student)
-                <tr>
-                    <td>{{$student->id}}</td>
-                    <td>{{$student->name}}</td>
-                    <td>{{$student->surname}}</td>
-                    <td>{{$group->name}}</td>
 
-                    <td><img src='{{$student->image_url}}' alt='{{$student->name}}' width="100" height="100"/></td>
+                <tr>
+                    <td>{{$articleImage->imagesArticle['id']}}</td>
+                    <td>{{$articleImage->imagesArticle['title']}}</td>
+                    <td>{{$articleImage->imagesArticle['excerpt']}}</td>
+                    <td>{{$articleImage->imagesArticle['description']}}</td>
+                    <td>{{$articleImage->imagesArticle['author']}}</td>
+                    <td>{{$articleImage->imagesArticle -> articlecategoryArticles}}</td>
+                    
 
                     <td>
-                        <form method="post" action="{{route('student.destroy', [$student])}}">
-                        @csrf
-                            <button class="btn btn-danger" type="submit">Delete Student</button>
+                        <form method="post" action="{{route('article.destroy', [$articleImage->imagesArticle])}}">
+                            @csrf
+                            <button class="btn btn-danger" type="submit">Delete</button>
                         </form>
                     </td>
                 </tr>
-            @endforeach
+         
             </table>
         @endif    
-        <form method="post" action="{{route('group.destroy', [$group])}}">
+
+
+
+            
+            
+
+        
+
+   
+        <form method="post" action="{{route('article.destroy', [$articleImage->imagesArticle])}}">
             @csrf
-            <button class="btn btn-danger" type="submit">Delete Group</button>
+            <button class="btn btn-danger" type="submit">Delete Article</button>
         </form>
-        <a class="btn btn-secondary" href="{{route('group.index')}}">Back</a>
+        <a class="btn btn-secondary" href="{{route('article.index')}}">Back</a>
 
 
 

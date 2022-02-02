@@ -1,42 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+@extends('layouts.app')
 
-    <title>Attendance Groups</title>
-</head>
-<body>
+@section('content')
 <div class="container">
-    <h1>Create Attendance Group</h1>
-        <form method="POST" action="{{route('group.store')}}" >
-            <input class="form-control" type='text' name="group_name" placeholder="Group name"/>
-            <input class="form-control" type='text' name="group_description" placeholder="Group description"/>
+<div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Profile Image</div>
+    
+                    <div class="card-body">
+                        <form method="POST" action="{{route('articleimage.store')}}" enctype="multipart/form-data">
+                            @csrf
+    
+                            <div class="row mb-3">
+                                <label for="image_alt" class="col-md-4 col-form-label text-md-end">Image Alt</label>
+    
+                                <div class="col-md-6">
+                                    <input id="image_alt" type="text" class="form-control" name="image_alt" required autofocus>
+    
+                                </div>
+                            </div>
 
-                <select class="form-control" name="group_difficulty_id" placeholder="Group difficulty">
-                    <option value="" disabled selected>Please select difficulty level</option>
-                    @foreach ($difficulties as $difficulty)
-                        <option value="{{$difficulty -> id}}" >{{$difficulty->difficulty}}</option>
-                    @endforeach
-                </select>
+                            <div class="row mb-3">
+                                <label for="image_src" class="col-md-4 col-form-label text-md-end">Image</label>
+    
+                                <div class="col-md-6">
+                                    <input id="image_src" type="file" class="form-control" name="image_src" required autofocus>
+    
+                                </div>
+                            </div>
 
-                <select class="form-control" name="group_school_id" placeholder="School">
-                    <option value="" disabled selected>Please select School</option>
-                    @foreach ($schools as $school)
-                        <option value="{{$school -> id}}" >{{$school->name}}</option>
-                    @endforeach
-                </select>
+                            <div class="row mb-3">
+                                <label for="image_width" class="col-md-4 col-form-label text-md-end">Image Width</label>
+    
+                                <div class="col-md-6">
+                                    <input id="image_width" type="number" min="0" max="200" step="10" class="form-control" name="image_width" required autofocus>
+    
+                                </div>
+                            </div>
 
+                            <div class="row mb-3">
+                                <label for="image_height" class="col-md-4 col-form-label text-md-end">Image Height</label>
+    
+                                <div class="col-md-6">
+                                    <input id="image_height" type="number" min="0" max="200" step="10" class="form-control" name="image_height" required autofocus>
+    
+                                </div>
+                            </div>
 
-            @csrf
-
-            <button class="btn btn-primary" type='submit'>Add</button>
-            <a class="btn btn-secondary" href="{{route('group.index')}}">Back</a>
-        </form>
-
+                            <div class="row mb-3">
+                                <label for="image_class" class="col-md-4 col-form-label text-md-end">Image Class</label>
+    
+                                <div class="col-md-6">
+                                    <input id="image_class" type="text" class="form-control" name="image_class" required autofocus>
+    
+                                </div>
+                            </div>
+    
+    
+                            <div class="row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <a class="btn btn-secondary" href="{{route('articleimage.index')}}">Back</a>
+            </div>
+        </div>
+            
+    
     </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</body>
-</html>
+    @endsection

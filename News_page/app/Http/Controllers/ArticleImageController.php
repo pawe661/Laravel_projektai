@@ -51,7 +51,7 @@ class ArticleImageController extends Controller
 
         $articleImage->alt = $request->image_alt;
 
-        $imageName = 'image' . time().'.'.$request->image_src->extension();
+        $imageName = 'images\image' . time().'.'.$request->image_src->extension();
         $request->image_src->move(public_path('images') , $imageName);
         $articleImage->src = $imageName;
 
@@ -98,7 +98,7 @@ class ArticleImageController extends Controller
         $articleImage->alt = $request->image_alt;
         
         if($request->has('image_src')) {
-            $imageName = 'image' . time().'.'.$request->image_src->extension();
+            $imageName = 'images\image' . time().'.'.$request->image_src->extension();
             $request->image_src->move(public_path('images') , $imageName);
             $articleImage->src = $imageName;
         }
@@ -121,12 +121,12 @@ class ArticleImageController extends Controller
     {
         $articles = $articleImage->imagesArticle; 
 
-        if(count($articles) != 0) {
-            return redirect()->route('articleimages.index')->with('error_message', 'Delete is not possible because image has article associated with it.');
+        if($articles) {
+            return redirect()->route('articleimage.index')->with('error_message', 'Delete is not possible because image has article associated with it.');
         }
 
         $articleImage->delete();
-        return redirect()->route('articleimages.index')->with('success_message', 'Everything is fine');
+        return redirect()->route('articleimage.index')->with('success_message', 'Everything is fine');
 
     }
 }
