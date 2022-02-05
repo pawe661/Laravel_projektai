@@ -78,7 +78,7 @@ class ProductCategoryController extends Controller
     public function edit(ProductCategory $productCategory)
     {
         $products = $productCategory->pcategoryProducts; 
-        return view('productcategory.edit',['productCategory' => $productCategory, 'products'=>$products]);
+        return view('productcategories.edit',['productCategory' => $productCategory, 'products'=>$products]);
     }
 
     /**

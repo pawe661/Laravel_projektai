@@ -28,7 +28,7 @@ Route::prefix('products')->group(function() {
     Route::get('create', 'App\Http\Controllers\ProductController@create')->name('product.create');
     Route::post('store', 'App\Http\Controllers\ProductController@store' )->name('product.store');
     Route::get('edit/{product}', 'App\Http\Controllers\ProductController@edit')->name('product.edit');
-    Route::post('update/{product}', 'App\Http\Controllers\ArtProductControllericleController@update')->name('product.update');
+    Route::post('update/{product}', 'App\Http\Controllers\ProductController@update')->name('product.update');
     Route::post('destroy/{product}', 'App\Http\Controllers\ProductController@destroy' )->name('product.destroy');
 
 });
