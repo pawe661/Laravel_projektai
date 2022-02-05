@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductCategory;
+use App\Models\Product;
 use App\Http\Requests\StoreProductCategoryRequest;
 use App\Http\Requests\UpdateProductCategoryRequest;
+
+use Illuminate\Http\Request;
 
 class ProductCategoryController extends Controller
 {
@@ -15,7 +18,9 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $productCategories = ProductCategory::all();
+        $products = Product::all();
+        return view('productcategories.index',['productCategories' => $productCategories, 'products' => $products]);
     }
 
     /**
@@ -25,7 +30,8 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
-        //
+        $products = Product::all();
+        return view('productcategories.create',['products'=>$products]);
     }
 
     /**
@@ -34,9 +40,22 @@ class ProductCategoryController extends Controller
      * @param  \App\Http\Requests\StoreProductCategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProductCategoryRequest $request)
+    public function store(Request $request)
     {
-        //
+        // $table->id();
+        // $table->string('title');
+        // $table->longText('description');
+        // $table->timestamps();
+
+        $productCategory = new ProductCategory;
+
+        $productCategory->title = $request->category_title;
+        $productCategory->description = $request->category_description;
+
+
+        $productCategory->save();
+
+        return redirect()->route('productcategory.index');
     }
 
     /**
@@ -58,7 +77,8 @@ class ProductCategoryController extends Controller
      */
     public function edit(ProductCategory $productCategory)
     {
-        //
+        $products = $productCategory->pcategoryProducts; 
+        return view('productcategory.edit',['productCategory' => $productCategory, 'products'=>$products]);
     }
 
     /**
@@ -68,9 +88,15 @@ class ProductCategoryController extends Controller
      * @param  \App\Models\ProductCategory  $productCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductCategoryRequest $request, ProductCategory $productCategory)
+    public function update(Request $request, ProductCategory $productCategory)
     {
-        //
+
+        $productCategory->title = $request->category_title;
+        $productCategory->description = $request->category_description;
+
+        $productCategory->save();
+
+        return redirect()->route('productcategory.index');
     }
 
     /**
@@ -81,6 +107,13 @@ class ProductCategoryController extends Controller
      */
     public function destroy(ProductCategory $productCategory)
     {
-        //
+        $products = $productCategory->pcategoryProducts; 
+
+        if(count($products) != 0) {
+            return redirect()->route('productcategory.index')->with('error_message', 'Delete is not possible because Category has products linked to it');
+        }
+
+        $products->delete();
+        return redirect()->route('productcategory.index')->with('success_message', 'Everything is fine');
     }
 }
