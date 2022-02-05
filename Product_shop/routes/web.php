@@ -30,7 +30,7 @@ Route::prefix('products')->group(function() {
     Route::get('edit/{product}', 'App\Http\Controllers\ProductController@edit')->name('product.edit');
     Route::post('update/{product}', 'App\Http\Controllers\ProductController@update')->name('product.update');
     Route::post('destroy/{product}', 'App\Http\Controllers\ProductController@destroy' )->name('product.destroy');
-
+    Route::get('productfilter', 'App\Http\Controllers\ProductController@productfilter')->name('product.productfilter');
 });
 
 Route::prefix('productcategories')->group(function() {

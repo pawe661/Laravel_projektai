@@ -18,11 +18,39 @@ class ProductController extends Controller
     public function index(Request $request)
     {
 
-        // $products = Product::all() ->sortBy('title', SORT_REGULAR, false);
-        $sort = request('sort','asc');
+        //reikalingas filtrui 
+        $categories = ProductCategory::orderBy('title', 'asc' )->get();
 
-        $products = Product::orderBy('title',$sort)->get();
-        return view('products.index', ['products' => $products, 'sort' => $sort]);
+        // $products = Product::all() ->sortBy('title', SORT_REGULAR, false);
+        $sortBy = request('selector','id');
+        $sort = request('sort','asc');
+        if($sortBy == "category_id") {
+
+          //kad padaryti orderBy su priklausomais stulpeliais reikia SQL kodo
+
+                // $categorytitle = function($query){
+                //     return $query->productPCategory->title;
+                // };
+                    
+                // $products = Product::orderBy($categorytitle, $sort)->get();
+                // $products = Product::with(['category_id' => function ($q){
+                //     $q->orderBy('title', 'DESC');
+                // }])
+                // ->get();
+                $tempsort = false;
+
+                if($sort == 'desc'){
+                    $tempsort = true;
+                }
+                
+            $products = Product::get()->sortBy(function($query){
+                return $query->productPCategory->title;
+            }, SORT_REGULAR, $tempsort )->all();
+        }else{
+            $products = Product::orderBy($sortBy, $sort)->get();
+        }
+        
+        return view('products.index', ['products' => $products, 'categories'=>$categories,'sortyby'=> $sortBy, 'sort' => $sort]);
 
         // return view('products.index',['products' => $products]);
     }
@@ -121,5 +149,18 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('product.index');
+    }
+
+    public function productfilter(Request $request) {
+        //1. filtras turi viena inputa kuriame yra select
+        //2. tame select yra atvaizduojami visi autoriai
+        //3. pasirinktas autorius yra perduodamas per forma i bookfilter funkcija
+        //4. ir pagal autoriaus kintamaji mes vykdome filtravima
+
+        // $products = Product::all();
+
+        $category_id = $request->category_id;
+        $products = Product::where('category_id', '=' , $category_id)->get();
+        return view('products.productfilter', ['products' =>$products]);
     }
 }

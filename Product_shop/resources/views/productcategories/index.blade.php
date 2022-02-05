@@ -21,6 +21,29 @@
     <p>There are no Categories</p>
     @endif
 
+    <form method="GET" action="{{route('productcategory.index')}}">
+        @csrf
+        <select name="sortCollumn">
+            @foreach ($select_array as $key=>$item)
+                @if($item == $sortCollumn || ($key == 0 && empty($sortCollumn)) )
+                    <option value="{{$item}}" selected>{{$item}}</option>
+                @else 
+                <option value="{{$item}}" >{{$item}}</option>
+                @endif
+                
+            @endforeach
+        </select>    
+        <select name="sortOrder">
+            @if ($sortOrder == 'asc' || empty($sortOrder))
+                <option value="asc" selected>Ascending</option>
+                <option value="desc">Descending</option>
+            @else 
+                <option value="asc">Ascending</option>
+                <option value="desc" selected>Descending</option>
+            @endif
+        </select>    
+        <button type="submit">Rikiuok</button>
+    </form>
 
     <a class="btn btn-primary" href="{{route('productcategory.create')}}">Create new Category</a>
     <table class="table table-striped">

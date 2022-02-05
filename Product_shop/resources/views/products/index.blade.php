@@ -20,20 +20,47 @@
     @if (count($products) == 0)
     <p>There are no Products</p>
     @endif
-  
+
+    <form method="GET" action="{{route('product.productfilter')}}">
+        @csrf
+    <select name="category_id">
+        {{-- Visus autorius --}}
+        @foreach ($categories as $category)
+            <option value="{{$category-> id}}">{{$category->title}}</option>
+        @endforeach
+    </select>
+
+
+    <button type="submit">Filter</button>
+    </form>    
     <a class="btn btn-primary" href="{{route('product.create')}}">Create new Product</a>
     <table class="table table-striped">
         <tr>
-            <th>Id</th>
-            <th>Product Title 
-                <a href="{{route('product.index')}}?sort=@if($sort =='asc') desc @else asc @endif">
+            <th>Id
+            <a href="{{route('product.index')}}?selector=id&sort=@if($sort =='asc') desc @else asc @endif">
                 @if($sort =='asc') <i class="bi bi-sort-alpha-down"></i>
                  @else <i class="bi bi-sort-alpha-up"></i> @endif
                 </a>
-        </th>
+            </th>
+            <th>Product Title 
+                <a href="{{route('product.index')}}?selector=title&sort=@if($sort =='asc') desc @else asc @endif">
+                @if($sort =='asc') <i class="bi bi-sort-alpha-down"></i>
+                 @else <i class="bi bi-sort-alpha-up"></i> @endif
+                </a>
+            </th>
             <th>Product Description</th>
-            <th>Product Price</th>
-            <th>Product Categories</th>
+            <th>Product Price
+                <a href="{{route('product.index')}}?selector=price&sort=@if($sort =='asc') desc @else asc @endif">
+                @if($sort =='asc') <i class="bi bi-sort-alpha-down"></i>
+                 @else <i class="bi bi-sort-alpha-up"></i> @endif
+                </a>
+            </th>
+            <th>Product Categories
+            <a href="{{route('product.index')}}?selector=category_id&sort=@if($sort =='asc') desc @else asc @endif">
+                @if($sort =='asc') <i class="bi bi-sort-alpha-down"></i>
+                 @else <i class="bi bi-sort-alpha-up"></i> @endif
+                </a>
+            </th>
             <th>Product Image</th>
             <th>Actions</th>
         </tr>
