@@ -113,7 +113,7 @@ class ProductCategoryController extends Controller
             return redirect()->route('productcategory.index')->with('error_message', 'Delete is not possible because Category has products linked to it');
         }
 
-        $products->delete();
+        $productCategory->delete();
         return redirect()->route('productcategory.index')->with('success_message', 'Everything is fine');
     }
 }

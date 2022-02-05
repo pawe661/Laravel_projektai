@@ -25,7 +25,12 @@
     <table class="table table-striped">
         <tr>
             <th>Id</th>
-            <th>Product Title</th>
+            <th>Product Title 
+                <a href="{{route('product.index')}}?sort=@if($sort =='asc') desc @else asc @endif">
+                @if($sort =='asc') <i class="bi bi-sort-alpha-down"></i>
+                 @else <i class="bi bi-sort-alpha-up"></i> @endif
+                </a>
+        </th>
             <th>Product Description</th>
             <th>Product Price</th>
             <th>Product Categories</th>

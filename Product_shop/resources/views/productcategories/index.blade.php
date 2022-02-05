@@ -39,12 +39,12 @@
             <td>{{$productCategory->description}}</td>
 
             <td>{{count($productCategory->pcategoryProducts)}}</td>
-            @csrf
+            
             <td>
                 <a class="btn btn-primary" href="{{route('productcategory.edit', [$productCategory])}}">Edit</a>
 
                 <form method="post" action="{{route('productcategory.destroy', [$productCategory])}}">
-                 
+                @csrf
                     <button class="btn btn-danger" type="submit">Delete</button>
                 </form>
             </td>
