@@ -19,6 +19,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
+        // rikiavimas - duomenu kiekis nesikeicia, keiciasi tik duomenu tvarka pagal tam tikra atributa
+        //filtravimas - keiciasi duomenu kiekis, atrenkant duomenis pagal tam tikra atributa
+        //
         $articles = Article::all();
         return view('articles.index',['articles' => $articles]);
     }
