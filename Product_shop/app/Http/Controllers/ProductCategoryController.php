@@ -21,33 +21,33 @@ class ProductCategoryController extends Controller
         
         $sortCollumn  = $request->sortCollumn;
         $sortOrder = $request->sortOrder; 
-
+       
         if(empty($sortCollumn) || empty($sortOrder)) {
             $productCategories = ProductCategory::all();
            
             foreach($productCategories as $key => $category){
-                $category['product_count'] = count($category->pcategoryProducts);
+                $category['pcategory_products_count'] = count($category->pcategoryProducts->toArray());
                 $productCategories[$key] = $category;
-                
             }
             // print_r($productCategories);
         } else {
-            // $productCategories = ProductCategory::orderBy($sortCollumn, $sortOrder )->get();
-            // $productCategories = ProductCategory::all();
-            // foreach($productCategories as $key => $category){
-            //     $category['product_count'] = count($category->pcategoryProducts);
-            //     $productCategories[$key] = $category;
-                
-            // }
-            $productCategories = ProductCategory::all()
- 
-            ->withCount('products')
+            if($sortCollumn !== 'pcategory_products_count'){
+            
+            $productCategories = ProductCategory::orderBy($sortCollumn, $sortOrder )->get();
 
-            ->get()
+            foreach($productCategories as $key => $category){
+                $category['pcategory_products_count'] = count($category->pcategoryProducts->toArray());
+                $productCategories[$key] = $category;
+            }
+            }else{
+            $tempsort = false;
 
-            ->toArray();
-
-            print_r($productCategories);
+                if($sortOrder == 'desc'){
+                    $tempsort = true;
+                }
+            $productCategories = ProductCategory::withCount('pcategoryProducts') ->get()
+            ->sortBy('pcategory_products_count', SORT_REGULAR, $tempsort);
+            }
         }
         $select_array =  array_keys($productCategories->first()->getAttributes());
         return view('productcategories.index',['productCategories' => $productCategories, 'sortCollumn' =>$sortCollumn, 'sortOrder'=> $sortOrder, 'select_array' => $select_array,]);

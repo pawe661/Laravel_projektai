@@ -9,8 +9,6 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $pcount = ['name','product_count'];
-    
     public function productPCategory() {
         return $this->belongsTo(ProductCategory::class, 'category_id', 'id');
     }
