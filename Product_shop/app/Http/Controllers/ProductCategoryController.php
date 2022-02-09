@@ -33,6 +33,11 @@ class ProductCategoryController extends Controller
             // print_r($productCategories);
         } else {
             $productCategories = ProductCategory::orderBy($sortCollumn, $sortOrder )->get();
+            foreach($productCategories as $key => $category){
+                $category['product_count'] = count($category->pcategoryProducts);
+                $productCategories[$key] = $category;
+                
+            }
         }
         $select_array =  array_keys($productCategories->first()->getAttributes());
         return view('productcategories.index',['productCategories' => $productCategories, 'sortCollumn' =>$sortCollumn, 'sortOrder'=> $sortOrder, 'select_array' => $select_array,]);
