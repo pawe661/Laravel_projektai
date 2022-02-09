@@ -61,7 +61,7 @@
             <td>{{$productCategory->title}}</td>
             <td>{{$productCategory->description}}</td>
 
-            <td>{{count($productCategory->pcategoryProducts)}}</td>
+            <td>{{$productCategory->product_count}}</td>
             
             <td>
                 <a class="btn btn-primary" href="{{route('productcategory.edit', [$productCategory])}}">Edit</a>

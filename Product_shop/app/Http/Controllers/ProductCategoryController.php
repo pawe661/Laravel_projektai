@@ -25,7 +25,11 @@ class ProductCategoryController extends Controller
         if(empty($sortCollumn) || empty($sortOrder)) {
             $productCategories = ProductCategory::all();
            
-            // $productCategories-> test1 = ['test', 'test2'];
+            foreach($productCategories as $key => $category){
+                $category['product_count'] = count($category->pcategoryProducts);
+                $productCategories[$key] = $category;
+                
+            }
             // print_r($productCategories);
         } else {
             $productCategories = ProductCategory::orderBy($sortCollumn, $sortOrder )->get();
