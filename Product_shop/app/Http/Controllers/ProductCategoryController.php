@@ -32,12 +32,22 @@ class ProductCategoryController extends Controller
             }
             // print_r($productCategories);
         } else {
-            $productCategories = ProductCategory::orderBy($sortCollumn, $sortOrder )->get();
-            foreach($productCategories as $key => $category){
-                $category['product_count'] = count($category->pcategoryProducts);
-                $productCategories[$key] = $category;
+            // $productCategories = ProductCategory::orderBy($sortCollumn, $sortOrder )->get();
+            // $productCategories = ProductCategory::all();
+            // foreach($productCategories as $key => $category){
+            //     $category['product_count'] = count($category->pcategoryProducts);
+            //     $productCategories[$key] = $category;
                 
-            }
+            // }
+            $productCategories = ProductCategory::all()
+ 
+            ->withCount('products')
+
+            ->get()
+
+            ->toArray();
+
+            print_r($productCategories);
         }
         $select_array =  array_keys($productCategories->first()->getAttributes());
         return view('productcategories.index',['productCategories' => $productCategories, 'sortCollumn' =>$sortCollumn, 'sortOrder'=> $sortOrder, 'select_array' => $select_array,]);
