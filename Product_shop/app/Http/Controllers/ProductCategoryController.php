@@ -23,7 +23,7 @@ class ProductCategoryController extends Controller
         $sortOrder = $request->sortOrder; 
        
         if(empty($sortCollumn) || empty($sortOrder)) {
-            $productCategories = ProductCategory::all();
+            $productCategories = ProductCategory::paginate(2);
            
             foreach($productCategories as $key => $category){
                 $category['pcategory_products_count'] = count($category->pcategoryProducts->toArray());
@@ -33,20 +33,15 @@ class ProductCategoryController extends Controller
         } else {
             if($sortCollumn !== 'pcategory_products_count'){
             
-            $productCategories = ProductCategory::orderBy($sortCollumn, $sortOrder )->get();
+            $productCategories = ProductCategory::orderBy($sortCollumn, $sortOrder )->paginate(2);
 
             foreach($productCategories as $key => $category){
                 $category['pcategory_products_count'] = count($category->pcategoryProducts->toArray());
                 $productCategories[$key] = $category;
             }
             }else{
-            $tempsort = false;
-
-                if($sortOrder == 'desc'){
-                    $tempsort = true;
-                }
-            $productCategories = ProductCategory::withCount('pcategoryProducts') ->get()
-            ->sortBy('pcategory_products_count', SORT_REGULAR, $tempsort);
+                $productCategories = ProductCategory::withCount('pcategoryProducts')
+                ->orderBy('pcategory_products_count', $sortOrder) ->paginate(2);
             }
         }
         $select_array =  array_keys($productCategories->first()->getAttributes());

@@ -14,7 +14,7 @@
         </div>   
     @endif
 
-    <div class="container">
+    <div class="container mt-5">
     <h1>Product Index</h1>
 
     @if (count($products) == 0)
@@ -86,6 +86,9 @@
         </tr>
     @endforeach
     </table>
+        <div class="d-flex justify-content-center">
+            {{$products->links()}} 
+        </div>
     <a class="btn btn-secondary" href="{{route('nav')}}">Back</a>
 
     </div>

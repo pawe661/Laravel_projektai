@@ -45,9 +45,9 @@ class ProductController extends Controller
                 
             $products = Product::get()->sortBy(function($query){
                 return $query->productPCategory->title;
-            }, SORT_REGULAR, $tempsort )->all();
+            }, SORT_REGULAR, $tempsort )->paginate(12);
         }else{
-            $products = Product::orderBy($sortBy, $sort)->get();
+            $products = Product::orderBy($sortBy, $sort)->paginate(12);
         }
         
         return view('products.index', ['products' => $products, 'categories'=>$categories,'sortyby'=> $sortBy, 'sort' => $sort]);
