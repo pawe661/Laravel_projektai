@@ -18,6 +18,7 @@ class CreatePaginationSettingsTable extends Migration
             $table->string('title');
             $table->bigInteger('value');
             $table->tinyInteger('visible');
+            $table->tinyInteger('default_value');
             $table->timestamps();
         });
     }

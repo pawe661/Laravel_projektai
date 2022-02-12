@@ -93,7 +93,9 @@
     @endforeach
     </table>
         <div class="d-flex justify-content-center">
-            {!! $tasks->appends(Request::except('page'))->render() !!}
+            @if ($page_limit != 1)
+                {!! $tasks->appends(Request::except('page'))->render() !!}
+            @endif   
         </div>
     </div>
     @endsection
