@@ -21,6 +21,7 @@ class ProductCategoryController extends Controller
         
         $sortCollumn  = $request->sortCollumn;
         $sortOrder = $request->sortOrder; 
+        $filterCollumn = $request->filterCollumn;
        
         if(empty($sortCollumn) || empty($sortOrder)) {
             $productCategories = ProductCategory::paginate(2);
