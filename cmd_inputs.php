@@ -11,6 +11,9 @@ php artisan make:model ProfileImage -- all
 <!-- Migruoti DB strukturą  -->
 php artisan migrate:fresh
 
+<!-- uzpildyti duomenim DB -->
+php artisan migrate:fresh --seed
+
 <!-- paleisti local host -->
 php artisan serve
 
