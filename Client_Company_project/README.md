@@ -15,4 +15,3 @@ php artisan serve
 php artisan migrate:fresh --seed
 
 
-https://fakerphp.github.io/formatters/

@@ -31,4 +31,6 @@ ir ištrinti package-lock.json ir node_modules aplanką-->
 npm install
 npm run dev
 
+https://fakerphp.github.io/formatters/
+
 
