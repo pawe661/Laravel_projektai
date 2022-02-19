@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Post;
 
 class PostSeeder extends Seeder
 {
@@ -13,6 +14,7 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $dbSeedCount = config('dbseedcount.db_seed_count_post');
+        Post::factory()->count($dbSeedCount)->create();
     }
 }

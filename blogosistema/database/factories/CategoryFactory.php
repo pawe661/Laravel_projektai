@@ -14,7 +14,12 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            //
+            // $table->string('title');
+            // $table->longText('description');
+            // $table->text('category_editor');
+            'title' => $this->faker->words(2, true),
+            'description' => $this->faker->paragraph(2),
+            'category_editor' => $this->faker->name(),
         ];
     }
 }

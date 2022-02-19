@@ -46,7 +46,7 @@ php artisan vendor:publish --provider="Kyslik\ColumnSortable\ColumnSortableServi
 https://fakerphp.github.io/formatters/
 
 <!-- jQuery biblioteka -->
-<!-- Įdedamas į app.blade viršų, 13 eilutėje ištrinti defer -->
+<!-- Įdedamas į app.blade head, 13 eilutėje ištrinti defer <script src="{{ asset('js/app.js') }}" defer></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 

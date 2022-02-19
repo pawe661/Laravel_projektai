@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Category;
 
 class CategorySeeder extends Seeder
 {
@@ -11,8 +12,11 @@ class CategorySeeder extends Seeder
      *
      * @return void
      */
+    
     public function run()
     {
-        //
+        $dbSeedCount = config('dbseedcount.db_seed_count_category');
+
+        Category::factory()->count($dbSeedCount)->create();
     }
 }
