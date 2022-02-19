@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -15,7 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return view('categories.index',['categories' => $categories]);
     }
 
     /**
@@ -25,7 +27,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.create');
     }
 
     /**
@@ -34,9 +36,21 @@ class CategoryController extends Controller
      * @param  \App\Http\Requests\StoreCategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(Request $request)
     {
-        //
+        // $table->string('title');
+        //     $table->longText('description');
+        //     $table->text('category_editor');
+        $category = new Category;
+
+        $category->title = $request->category_title;
+        $category->description = $request->category_description;
+        $category->category_editor = $request->category_editor;
+
+
+        $category->save();
+
+        return redirect()->route('category.index');
     }
 
     /**
@@ -47,7 +61,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        $posts = $category -> categoryPosts;
+        return view('categories.show',['category' => $category, 'posts' => $posts]);
     }
 
     /**
@@ -58,7 +73,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        $posts = $category -> categoryPosts;
+        return view('categories.edit',['category' => $category, 'posts' => $posts]);
     }
 
     /**
@@ -68,9 +84,17 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(Request $request, Category $category)
     {
-        //
+
+        $category->title = $request->category_title;
+        $category->description = $request->category_description;
+        $category->category_editor = $request->category_editor;
+
+
+        $category->save();
+
+        return redirect()->route('category.index');
     }
 
     /**
@@ -81,6 +105,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $posts = $category -> categoryPosts;
+
+        if(count($posts) != 0) {
+            return redirect()->route('category.index')->with('error_message', 'Delete is not possible because Category has Posts linked to it');
+        }
+
+        $category->delete();
+        return redirect()->route('category.index')->with('success_message', 'Everything is fine');
     }
 }
