@@ -22,7 +22,7 @@
     </head>
     <body class="antialiased">
     <a class="btn btn-secondary" href="{{route('task.index')}}">Tasks</a>
-    <a class="btn btn-secondary" href="{{route('paginationSetting.edit', [1])}}">Settings</a>
+    <a class="btn btn-secondary" href="{{route('paginationSetting.selectSetting')}}">Settings</a>
 
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             @if (Route::has('login'))

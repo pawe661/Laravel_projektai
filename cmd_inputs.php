@@ -42,7 +42,11 @@ Kyslik\ColumnSortable\ColumnSortableServiceProvider::class
 <!--  pagamina config aplanke nustatymų dokumentą-->
 php artisan vendor:publish --provider="Kyslik\ColumnSortable\ColumnSortableServiceProvider" --tag="config"
 
-
+<!-- Faker aprašas  -->
 https://fakerphp.github.io/formatters/
+
+<!-- jQuery biblioteka -->
+<!-- Įdedamas į app.blade viršų, 13 eilutėje ištrinti defer -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 

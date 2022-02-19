@@ -1,64 +1,45 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+1. Sukurti naują Laravel projektą.
+2. Įtraukti autentifikacijos modulį.
+3. Sukurti modelį TaskStatus:
+   id
+   title(string)
+4. Sukurti modelį Task:
+   id
+   title(string)
+   description(longText)
+   status_id(unsignedBigInteger)
+5. Sukurtį modelį PaginationSetting:
+   id
+   title(string)
+   value(bigInteger)
+   visible(tinyInteger)
+6. Sudaryti ryšį Task.status_id -> TaskStatus.id
+7. Sukurti 3 TaskStatus seeder dokumente:
+   id    title    
+   1     Completed
+   2     On Hold
+   3     Started
+8. Sukurti 200 netikrų Task
+9. PaginationSetting užpildyti tokiais duomenimis:
+   id     title    value    visible
+   1       15        15        1
+   2       20        20        0
+   3       30        30        1
+   4       All       1         1
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+10. Sukurti tik Task index.blade.php. Jame sukurti formą, kurioje galima pasirinkti rikiavimo stulpelį, rikiavimo tvarką,
+filtruoti pagal užduoties statusą ir pasirinkti, kiek įrašų rodyti per puslapį.(Tokia pati forma, kokią sukūrėme paskaitų metu)
 
-## About Laravel
+P.S Visų CRUD operacijų kurti nereikia, reikalingas tik Task index.blade.php dokumentas    
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
++++
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. PaginationSetting modelį papildyti stulpeliu "default_value". Stulpelio tipas - tinyInteger. Galimos reikšmės 1 arba 0.
+2. Tik vienas iš visų įrašų gali turėti reikšmę 1, kiti turi būti 0. Tai surašyti tiesiog ranka, arba sukurti CRUD operacijas
+PaginationSettings, kur galima nustatyti, kuris parametras numatytasis.
+3. Task index.blade.php, pagal tai, kurio įrašo iš PaginationSetting "default_value" vertė yra 1,
+atvaizduoti įrašus. Pvz.: nustatymas,kuris rodo 30 įrašų, turi default_value = 1, jis yra numatytasis, ir užkrovus Task index.blade.php turi būti pažymėta 30, ir 30 įrašų rodyti puslapyje
+4. Sukurti Task index.blade.php kopiją indexsortable.blade.php
+5. Instaliuoti rikiavimo modulį. Instaliavimo intstrukcija šeštadienio paskaitos įrašas.
+6. Task indexsortable.blade.php turi veikti identiškai kaip ir index.blade.php(rikiavimas, filtravimas, puslapiavimas, įrašų pus
+lapyje pasirinkimas), tačiau rikiavimo veiksmą turi atlikti rikiavimo modulis.

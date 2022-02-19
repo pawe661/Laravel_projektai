@@ -59,7 +59,8 @@ class PaginationSettingController extends Controller
      */
     public function edit(PaginationSetting $paginationSetting)
     {
-        return view('paginationSettings.edit', ['paginationSetting' => $paginationSetting]);
+        $paginationSettings = PaginationSetting::all();
+        return view('paginationSettings.edit', ['paginationSettingFromController' => $paginationSetting, 'paginationSettings'=> $paginationSettings]);
     }
 
     /**
@@ -71,18 +72,20 @@ class PaginationSettingController extends Controller
      */
     public function update(Request $request, PaginationSetting $paginationSetting)
     {
-        // $table->string('title');
-        // $table->bigInteger('value');
-        // $table->tinyInteger('visible');
-        // $table->tinyInteger('default_value');
-        $paginationSetting->title = $request->pagination_settings_title;
-        $paginationSetting->value = $request->pagination_settings_value;
-        $paginationSetting->visible = $request->pagination_settings_visible;
+        if($request->has('title')) {
+            $paginationSetting->title = $request->pagination_settings_title;
+        }
+        if($request->has('value')) {
+            $paginationSetting->value = $request->pagination_settings_value;
+        }
+        if($request->has('visible')) {
+            $paginationSetting->visible = $request->pagination_settings_visible;
+        }
         $paginationSetting->default_value = $request->pagination_settings_default_value;
 
         $paginationSetting->save();
 
-        return redirect()->route('paginationSetting.edit');
+        return redirect()->route('task.index');
     }
 
     /**
@@ -94,5 +97,10 @@ class PaginationSettingController extends Controller
     public function destroy(PaginationSetting $paginationSetting)
     {
         //
+    }
+    public function selectSetting()
+    {
+        $paginationSettings = PaginationSetting::all();
+        return view('paginationSettings.selectSetting', ['paginationSettings'=> $paginationSettings]);
     }
 }
