@@ -25,12 +25,13 @@
     <a class="btn btn-primary" href="{{route('category.create')}}">Create new Category</a>
     <table class="table table-striped">
         <tr>
-            <th>Id</th>
-            <th>Category Title</th>
-            <th>Category Description</th>
-            <th>Category Editor</th>
-            <th>Post Count</th>
+            <th>@sortablelink('id', 'ID')</th>
+            <th>@sortablelink ('title', 'Category Title')</th>
+            <th>@sortablelink('description', 'Category Description')</th>
+            <th>@sortablelink('category_editor', 'Category Editor')</th>
+            <th>@sortablelink('category_posts_count', 'Post Count')</th>
             <th>Actions</th>
+           
         </tr>
         
         @foreach ($categories as $category)
@@ -56,7 +57,8 @@
         </tr>
     @endforeach
     </table>
-    <a class="btn btn-secondary" href="{{route('nav')}}">Back</a>
+    {!! $categories->appends(Request::except('page'))->render() !!}
+    <a class="btn btn-secondary" href="{{route('nav')}}">Back to nav</a>
 
 
     </div>

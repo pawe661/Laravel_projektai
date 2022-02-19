@@ -11,7 +11,7 @@
             <input class="form-control" type='text' name="post_author" placeholder="post author"/>
 
     
-<!-- EDIT PASIRINKIMĄ -->
+
             <select class="form-control" name="post_category_id" placeholder="post category">
                 <option value="" disabled selected>Please select Category</option>
                     @foreach ($categories as $category)

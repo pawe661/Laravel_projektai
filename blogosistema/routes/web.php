@@ -29,6 +29,7 @@ Route::prefix('posts')->group(function() {
     Route::post('update/{post}', 'App\Http\Controllers\PostController@update')->name('post.update');
     Route::post('destroy/{post}', 'App\Http\Controllers\PostController@destroy' )->name('post.destroy');
     Route::get('show/{post}', 'App\Http\Controllers\PostController@show')->name('post.show');
+    Route::get('masscreate', 'App\Http\Controllers\PostController@masscreate')->name('post.masscreate');
 
 });
 
@@ -41,5 +42,6 @@ Route::prefix('categories')->group(function() {
     Route::post('update/{category}', 'App\Http\Controllers\CategoryController@update')->name('category.update');
     Route::post('destroy/{category}', 'App\Http\Controllers\CategoryController@destroy' )->name('category.destroy');
     Route::get('show/{category}', 'App\Http\Controllers\CategoryController@show')->name('category.show');
+    Route::get('masscreate', 'App\Http\Controllers\CategoryController@masscreate')->name('category.masscreate');
 
 });

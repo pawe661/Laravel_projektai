@@ -20,17 +20,38 @@
     @if (count($posts) == 0)
     <p>There are no posts</p>
     @endif
-  
+
+    <form method="GET" action="{{route('post.index')}}">
+        @csrf
+        Filter by 
+        <select name="category_id">
+            <option value="all">All</option>
+            @foreach ($categories as $category)
+                @if ($category->id == $category_id)
+                    <option value="{{$category->id}}" selected>{{$category->title}} </option>
+                @else
+                    <option value="{{$category->id}}">{{$category->title}}</option>
+                @endif    
+            @endforeach
+        </select>
+        <br >
+
+        <button class="btn btn-secondary" type="submit">Sort</button>
+    </form>
+    <a href="{{route('post.index')}}" class="btn btn-primary">Clear filter</a>   
+
     <a class="btn btn-primary" href="{{route('post.create')}}">Create new Post</a>
+    <a class="btn btn-primary" href="{{route('post.masscreate')}}">Create new Post with new Category</a>
     <table class="table table-striped">
         <tr>
-            <th>Id</th>
-            <th>Post Title</th>
-            <th>Post Excerpt</th>
-            <th>Post Description</th>
-            <th>Post Author</th>
-            <th>Post Category</th>
+            <th>@sortablelink('id', 'ID')</th>
+            <th>@sortablelink ('title', 'Post Title')</th>
+            <th>@sortablelink('excerpt', 'Category Excerpt')</th>
+            <th>@sortablelink('description', 'Post Description')</th>
+            <th>@sortablelink('author', 'Post Author')</th>
+            <th>@sortablelink('postCategory.title', 'Post Category')</th>
             <th>Actions</th>
+            
         </tr>
         
         @foreach ($posts as $post)
@@ -55,6 +76,7 @@
         </tr>
     @endforeach
     </table>
+    {!! $posts->appends(Request::except('page'))->render() !!}
     <a class="btn btn-secondary" href="{{route('nav')}}">Back to nav</a>
 
     </div>
