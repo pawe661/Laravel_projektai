@@ -10,7 +10,7 @@
             <input class="form-control" type='text' name="post_description" value="{{$post->description}}" placeholder="post description"/>
             <input class="form-control" type='text' name="post_author" value="{{$post->author}}" placeholder="post author"/>
             
-            <!-- EDIT PASIRINKIMĄ -->
+            
                 <select class="form-control" name="post_category_id" placeholder="post category">
                     @foreach ($categories as $category)
                         @if ($category->id == $post->category_id)

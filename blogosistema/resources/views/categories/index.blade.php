@@ -23,6 +23,7 @@
 
 
     <a class="btn btn-primary" href="{{route('category.create')}}">Create new Category</a>
+    <a class="btn btn-primary" href="{{route('category.masscreate')}}">Create new Category with new Posts</a>
     <table class="table table-striped">
         <tr>
             <th>@sortablelink('id', 'ID')</th>

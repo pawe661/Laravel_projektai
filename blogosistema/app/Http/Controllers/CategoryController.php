@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Post;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
@@ -50,8 +51,22 @@ class CategoryController extends Controller
         $category->description = $request->category_description;
         $category->category_editor = $request->category_editor;
 
-
         $category->save();
+        if($request->category_newposts) {
+            
+            $posts_count = count($request->post_title);
+
+            for($i=0; $i< $posts_count; $i++) {
+                $post = new Post;
+                $post->title = $request->post_title[$i];
+                $post->excerpt = $request->post_excerpt[$i];
+                $post->description = $request->post_description[$i];
+                $post->author = $request->post_author[$i];
+                $post->category_id = $category->id;
+
+                $post->save();
+            }
+        }
 
         return redirect()->route('category.index');
     }
@@ -116,6 +131,13 @@ class CategoryController extends Controller
 
         $category->delete();
         return redirect()->route('category.index')->with('success_message', 'Everything is fine');
+    }
+
+    public function masscreate(Request $request) {
+
+        $posts = Post::all();
+        return view('categories.masscreate',['posts'=>$posts]);
+
     }
     
 }
