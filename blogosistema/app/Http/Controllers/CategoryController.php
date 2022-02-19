@@ -17,6 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         
+        
         $categories = Category:: withCount('categoryPosts')->sortable()->paginate(5);
         
         return view('categories.index',['categories' => $categories]);
@@ -116,4 +117,5 @@ class CategoryController extends Controller
         $category->delete();
         return redirect()->route('category.index')->with('success_message', 'Everything is fine');
     }
+    
 }
