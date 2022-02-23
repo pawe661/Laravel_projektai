@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -60,18 +61,19 @@ class CategoryController extends Controller
         // // category_description - maksimaliai 255 simbolių
         $category->description = $request->category_description;
         $category->category_editor = $request->category_editor;
-
+        
         $category->save();
         if($request->category_newposts) {
             
             $posts_count = count($request->post_title);
 
             for($i=0; $i< $posts_count; $i++) {
-                $post= $request->validate([
-                    'post_title' => 'required|string|max:25',
-                    'post_excerpt' => 'required|max:125',
-                    'post_description' => 'required|max:255',
-                    'post_author' => 'required|alpha',
+                // Validacija mass array
+                $post = Validator::make($request->all(), [
+                    'post.*.post_titles' => 'required|string|max:25',
+                    'post.*.post_excerpt' => 'required|max:125',
+                    'post.*.post_description' => 'required|max:255',
+                    'post.*.post_author' => 'required|alpha',
                 ]);
         
                 $post = new Post;
@@ -84,7 +86,7 @@ class CategoryController extends Controller
                 // post_author - tik raidės, negalima įvesti skaičių
                 $post->author = $request->post_author[$i];
                 $post->category_id = $category->id;
-
+                
                 $post->save();
             }
         }
