@@ -45,9 +45,19 @@ class CategoryController extends Controller
         // $table->string('title');
         //     $table->longText('description');
         //     $table->text('category_editor');
+
+
+        $category= $request->validate([
+            'category_title' => 'required|string|max:16',
+            'category_description' => 'required|max:255',
+            'category_editor' => 'required',
+        ]);
+
         $category = new Category;
 
+        // // category_title - tik tekstas, maksimaliai 16 simbolių
         $category->title = $request->category_title;
+        // // category_description - maksimaliai 255 simbolių
         $category->description = $request->category_description;
         $category->category_editor = $request->category_editor;
 
@@ -57,10 +67,21 @@ class CategoryController extends Controller
             $posts_count = count($request->post_title);
 
             for($i=0; $i< $posts_count; $i++) {
+                $post= $request->validate([
+                    'post_title' => 'required|string|max:25',
+                    'post_excerpt' => 'required|max:125',
+                    'post_description' => 'required|max:255',
+                    'post_author' => 'required|alpha',
+                ]);
+        
                 $post = new Post;
+                // post_title - tik tekstas, maksimaliai 25 simboliai
                 $post->title = $request->post_title[$i];
+                // post_excerpt - 125 simboliai
                 $post->excerpt = $request->post_excerpt[$i];
+                // post_description - maksimaliai 255 simbolių
                 $post->description = $request->post_description[$i];
+                // post_author - tik raidės, negalima įvesti skaičių
                 $post->author = $request->post_author[$i];
                 $post->category_id = $category->id;
 
