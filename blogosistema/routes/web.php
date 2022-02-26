@@ -45,3 +45,28 @@ Route::prefix('categories')->group(function() {
     Route::get('masscreate', 'App\Http\Controllers\CategoryController@masscreate')->name('category.masscreate');
 
 });
+
+Route::prefix('tasks')->group(function() {
+
+    Route::get('', 'App\Http\Controllers\TaskController@index')->name('task.index');
+    Route::get('create', 'App\Http\Controllers\TaskController@create')->name('task.create');
+    Route::post('store', 'App\Http\Controllers\TaskController@store' )->name('task.store');
+    Route::get('edit/{task}', 'App\Http\Controllers\TaskController@edit')->name('task.edit');
+    Route::post('update/{task}', 'App\Http\Controllers\TaskController@update')->name('task.update');
+    Route::post('destroy/{task}', 'App\Http\Controllers\TaskController@destroy' )->name('task.destroy');
+    Route::get('show/{task}', 'App\Http\Controllers\TaskController@show')->name('task.show');
+   
+});
+
+Route::prefix('owners')->group(function() {
+
+    Route::get('', 'App\Http\Controllers\OwnerController@index')->name('owner.index');
+    // Route::get('create', 'App\Http\Controllers\PostController@create')->name('post.create');
+    // Route::post('store', 'App\Http\Controllers\PostController@store' )->name('post.store');
+    // Route::get('edit/{post}', 'App\Http\Controllers\PostController@edit')->name('post.edit');
+    // Route::post('update/{post}', 'App\Http\Controllers\PostController@update')->name('post.update');
+    // Route::post('destroy/{post}', 'App\Http\Controllers\PostController@destroy' )->name('post.destroy');
+    // Route::get('show/{post}', 'App\Http\Controllers\PostController@show')->name('post.show');
+    // Route::get('masscreate', 'App\Http\Controllers\PostController@masscreate')->name('post.masscreate');
+
+});
