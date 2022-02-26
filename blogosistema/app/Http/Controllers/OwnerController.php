@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Owner;
 use App\Http\Requests\StoreOwnerRequest;
 use App\Http\Requests\UpdateOwnerRequest;
+use App\Models\Task;
+use Illuminate\Http\Request;
 
 class OwnerController extends Controller
 {
@@ -15,7 +17,10 @@ class OwnerController extends Controller
      */
     public function index()
     {
-        //
+        
+        $owners = Owner:: withCount('ownerTasks')->sortable()->paginate(25);
+       
+        return view('owners.index',['owners' => $owners]);
     }
 
     /**
@@ -23,9 +28,14 @@ class OwnerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $tasksCount = $request->tasksCount;
+
+        if(!$tasksCount) {
+            $tasksCount = 3;
+        }
+        return view('owners.create',['tasksCount'=>$tasksCount]);
     }
 
     /**
@@ -34,9 +44,60 @@ class OwnerController extends Controller
      * @param  \App\Http\Requests\StoreOwnerRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreOwnerRequest $request)
+    public function store(Request $request)
     {
-        //
+        // Owner
+        // $table->string('name');
+        // $table->string('surname');
+        // $table->string('email');
+        // $table->string('phone');
+
+        
+
+        $owner= $request->validate([
+            'owner_name' => 'required|alpha|min:2|max:15',
+            'owner_surname' => 'required|alpha|min:2|max:15',
+            'owner_email' => 'required|email:rfc',
+            'owner_phone' => ["required", 'regex:/(86|\+3706)\d{7}/'],
+            
+        ]);
+        $owner = new Owner;
+        
+        $owner->name = $request->owner_name;
+        $owner->surname = $request->owner_surname;
+        $owner->email = $request->owner_email;
+        $owner->phone = $request->owner_phone;
+        
+        $owner->save();
+
+        if($request->owner_newtask){
+            $task_count = count($request->taskTitle);
+
+            for($i=0; $i< $task_count; $i++) {
+
+                $request->validate( [
+                    'taskTitle.*.title' => 'required|alpha|min:6|max:225',
+                    'taskDescriptios.*.description' => 'required|max:1500',
+                    'taskSDate.*.start_date' => 'required|date',
+                    'taskEDate.*.end_date' => 'required|date|after:start_date',
+                    'taslLogo.*.logo' => 'image',
+                ]);
+
+                $task = new Task();
+
+                $task->title = $request->taskTitle[$i]['title'];
+                $task->description = $request->taskDescriptios[$i]['description'];
+                $task->start_date = $request->taskSDate[$i]['start_date'];
+                $task->end_date = $request->taskEDate[$i]['end_date'];
+                $task->logo = $request->taslLogo[$i]['logo'];
+
+                $task->save();
+            }
+
+        }
+        
+
+        return redirect()->route('owner.index');
     }
 
     /**
