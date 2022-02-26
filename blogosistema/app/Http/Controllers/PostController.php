@@ -54,15 +54,25 @@ class PostController extends Controller
         //     $table->longText('description');
         //     $table->text('author');
         //     $table->unsignedBigInteger('category_id');
+        $post= $request->validate([
+            'post_title' => 'required|string|max:25',
+            'post_excerpt' => 'required|max:125',
+            'post_description' => 'required|max:255',
+            'post_author' => 'required|alpha',
+        ]);
         $post = new Post;
-
+        
         $post->title = $request->post_title;
         $post->excerpt = $request->post_excerpt;
         $post->description = $request->post_description;
         $post->author = $request->post_author;
         
         if($request->post_newcategory){
-
+            $category= $request->validate([
+                'category_title' => 'required|string|max:16',
+                'category_description' => 'required|max:255',
+                'category_editor' => 'required',
+            ]);
             $category = new Category;
 
             $category->title = $request->category_title;

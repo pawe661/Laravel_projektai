@@ -21,10 +21,10 @@
             <button type="button" class="btn btn-danger remove_field">Remove</button>
             <div class="post-info post-first row">
                 <div class="form-group">
-                    <input class="form-control" type='text' name="post_title[]" placeholder="post title"/>
-                    <input class="form-control" type='text' name="post_excerpt[]" placeholder="post excerpt"/>
-                    <input class="form-control" type='text' name="post_description[]" placeholder="post description"/>
-                    <input class="form-control" type='text' name="post_author[]" placeholder="post author"/>
+                    <input class="form-control" type='text' name="post[0][title]" placeholder="post title"/>
+                    <input class="form-control" type='text' name="post[0][excerpt]" placeholder="post excerpt"/>
+                    <input class="form-control" type='text' name="post[0][description]" placeholder="post description"/>
+                    <input class="form-control" type='text' name="post[0][author]" placeholder="post author"/>
                 </div>
             </div>
 
@@ -48,9 +48,14 @@
             $('#post_excerpt').val('');
             $('#post_description').val('');
             $('#post_author').val('');
+            
         })
+        
         $('.add_field').click(function(){
-            $('.posts-info').append('<br/><div class="post-info post-first row"><div class="form-group"><input class="form-control" type="text" name="post_title[]" placeholder="post title"/><input class="form-control" type="text" name="post_excerpt[]" placeholder="post excerpt"/><input class="form-control" type="text" name="post_description[]" placeholder="post description"/><input class="form-control" type="text" name="post_author[]" placeholder="post author"/></div></div>');
+            var divCount = $('.post-first').length;
+            divCount = divCount + 1;
+            console.log( divCount);
+            $('.posts-info').append('<br/><div class="post-info post-first row"><div class="form-group"><input class="form-control" type="text" name="post[$divCount][title]" placeholder="post title"/><input class="form-control" type="text" name="post[][excerpt]" placeholder="post excerpt"/><input class="form-control" type="text" name="post[][description]" placeholder="post description"/><input class="form-control" type="text" name="post[][author]" placeholder="post author"/></div></div>');
         });
         $('.remove_field').click(function() {
             //kaip pasirinkti paskutini elementa kurio clase yra input-rating

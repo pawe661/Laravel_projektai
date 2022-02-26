@@ -64,16 +64,16 @@ class CategoryController extends Controller
         
         $category->save();
         if($request->category_newposts) {
+            dd($request);
+            $posts_count = count($request->post['title']);
             
-            $posts_count = count($request->post_title);
-
             for($i=0; $i< $posts_count; $i++) {
                 // Validacija mass array
                 $post = Validator::make($request->all(), [
-                    'post.*.post_titles' => 'required|string|max:25',
-                    'post.*.post_excerpt' => 'required|max:125',
-                    'post.*.post_description' => 'required|max:255',
-                    'post.*.post_author' => 'required|alpha',
+                    'post.*.titles' => 'required|string|max:25',
+                    'post.*.excerpt' => 'required|max:125',
+                    'post.*.description' => 'required|max:255',
+                    'post.*.author' => 'required|alpha',
                 ]);
         
                 $post = new Post;
