@@ -29,13 +29,13 @@
 3. + Task modelį papildyti laukeliu owner_id ir sukurti ryšį. Prie kiekvieno Task index.blade.php     lentelėje turi atvaizduoti Owner vardą ir pavardę. Pagal Owner turi būti galima rikiuoti Tasks.
 4. Sukurti visas Owner CRUD operacijas.
 5. Pridėti visų sukurtų laukelių validacijas:
-    tasks.title - privalomas, tik lotyniškos raidės, maksimalus simbolių kiekis 225, minimalus 6
-    tasks.description - privalomas, maksimalus simbolių kiekis 1500
-    tasks.start_date - privalomas, datos formatas
+    + tasks.title - privalomas, tik lotyniškos raidės, maksimalus simbolių kiekis 225, minimalus 6
+    + tasks.description - privalomas, maksimalus simbolių kiekis 1500
+    + tasks.start_date - privalomas, datos formatas
     tasks.end_date - privalomas, datos formatas, vėlesnė nei tasks.start_date
-    tasks.owner_id - skaičius daugiau už 0, privalomas
+    ??? tasks.owner_id - skaičius daugiau už 0, privalomas
     tasks.logo - pavieksliukas
-    owners.name - privalomas, tik lotyniškos raidės, maksimalus simbolių kiekis 15, minimalus 2
-    owners.surname - privalomas, tik lotyniškos raidės, maksimalus simbolių kiekis 15, minimalus 2,
-    owners.email - privalomas, patikrinti ar tai tikrai elektroninis paštas.
-    owners.phone - privalomas, patikrinti ar numeris lietuviško formato, maksimalus simbolių kiekis - tiek, kiek lietuviško formato numeris gali turėti.
+    + owners.name - privalomas, tik lotyniškos raidės, maksimalus simbolių kiekis 15, minimalus 2
+    + owners.surname - privalomas, tik lotyniškos raidės, maksimalus simbolių kiekis 15, minimalus 2,
+    +? owners.email - privalomas, patikrinti ar tai tikrai elektroninis paštas.
+    +? owners.phone - privalomas, patikrinti ar numeris lietuviško formato, maksimalus simbolių kiekis - tiek, kiek lietuviško formato numeris gali turėti.
