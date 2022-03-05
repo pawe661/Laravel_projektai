@@ -28,8 +28,8 @@ Route::prefix('articles')->group(function() {
     Route::post('storeAjax', 'App\Http\Controllers\ArticleController@storeAjax')->name('article.storeAjax');
     Route::post('delete/{article}', 'App\Http\Controllers\ArticleController@destroy')->name('article.destroy');
     Route::post('deleteAjax/{article}', 'App\Http\Controllers\ArticleController@destroyAjax')->name('article.destroyAjax');
-    // Route::get('showAjax/{client}', 'App\Http\Controllers\ArticleController@showAjax')->name('client.showAjax');
-    // Route::post('updateAjax/{client}', 'App\Http\Controllers\ArticleController@updateAjax')->name('client.updateAjax');
+    Route::get('showAjax/{article}', 'App\Http\Controllers\ArticleController@showAjax')->name('article.showAjax');
+    Route::post('updateAjax/{article}', 'App\Http\Controllers\ArticleController@updateAjax')->name('article.updateAjax');
 });
 
 Route::prefix('types')->group(function() {

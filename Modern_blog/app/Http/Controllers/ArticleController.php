@@ -63,7 +63,7 @@ class ArticleController extends Controller
 
         $article_array = array(
             'successMessage' => "Article stored succesfuly",
-            'articleId' => $article->id,
+            'articleID' => $article->id,
             'articleTitle' => $article->title,
             'articleDescription' => $article->description,
             'articleType' => $article->type_id,
@@ -90,9 +90,24 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+        return view("article.show", ['article' => $article]);
     }
+   
+    public function showAjax(Article $article) {
+        
+        $article_array = array(
+            'successMessage' => "Article viewed succesfuly",
+            'articleID' => $article->id,
+            'articleTitle' => $article->title,
+            'articleDescription' => $article->description,
+            'articleType' => $article->type_id,
+            'articleTypeDisplay' => $article->articleType->title,
+        );
 
+        $json_response =response()->json($article_array); 
+
+        return $json_response;
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -111,11 +126,38 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(Request $request, Article $article)
     {
-        //
+        $article->title = $request->article_title;
+        $article->description = $request->article_description;
+        $article->type_id = $request->article_type;
+
+        $article->save();
+        return redirect()->route('article.index');
     }
 
+    public function updateAjax(Request $request, Article $article)
+    {
+        $article->title = $request->article_title;
+        $article->description = $request->article_description;
+        $article->type_id = $request->article_type;
+
+        $article->save();
+
+        $article_array = array(
+            'successMessage' => "Article viewed succesfuly",
+            'articleID' => $article->id,
+            'articleTitle' => $article->title,
+            'articleDescription' => $article->description,
+            'articleType' => $article->type_id,
+            'articleTypeDisplay' => $article->articleType->title,
+        );
+
+        // 
+        $json_response =response()->json($article_array); //javascript masyva
+
+        return $json_response;
+    }
     /**
      * Remove the specified resource from storage.
      *
