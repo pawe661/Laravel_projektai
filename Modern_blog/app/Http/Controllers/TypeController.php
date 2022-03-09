@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Type;
 use App\Http\Requests\StoreTypeRequest;
 use App\Http\Requests\UpdateTypeRequest;
+use Illuminate\Http\Request;
 
 class TypeController extends Controller
 {
@@ -36,11 +37,41 @@ class TypeController extends Controller
      * @param  \App\Http\Requests\StoreTypeRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTypeRequest $request)
+    public function store(Request $request)
     {
-        //
+        $type = new Type();
+
+        $type->title = $request->type_title;
+        $type->description = $request->type_description;
+        
+        $type->save();
+
+        return redirect()->route('type.index');
     }
 
+    public function storeAjax(Request $request) {
+
+        $type = new Type();
+
+        $type->title = $request->type_title;
+        $type->description = $request->type_description;
+
+        $type->save();
+
+        $type_array = array(
+            'successMessage' => "Type stored succesfuly",
+            'typeID' => $type->id,
+            'typeTitle' => $type->title,
+            'typeDescription' => $type->description,
+
+        );
+
+        // 
+        $json_response =response()->json($type_array); //javascript masyvas
+
+
+        return $json_response;
+    }
     /**
      * Display the specified resource.
      *
@@ -51,7 +82,19 @@ class TypeController extends Controller
     {
         //
     }
+    public function showAjax(Type $type) {
+        
+        $type_array = array(
+            'successMessage' => "Type stored succesfuly",
+            'typeID' => $type->id,
+            'typeTitle' => $type->title,
+            'typeDescription' => $type->description,
+        );
 
+        $json_response =response()->json($type_array); 
+
+        return $json_response;
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -74,7 +117,25 @@ class TypeController extends Controller
     {
         //
     }
+    public function updateAjax(Request $request, Type $type)
+    {
+        $type->title = $request->type_title;
+        $type->description = $request->type_description;
 
+        $type->save();
+
+        $$type_array = array(
+            'successMessage' => "Type stored succesfuly",
+            'typeID' => $type->id,
+            'typeTitle' => $type->title,
+            'typeDescription' => $type->description,
+        );
+
+        // 
+        $json_response =response()->json($type_array); //javascript masyva
+
+        return $json_response;
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -83,6 +144,20 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        //
+        $type->delete();
+        return redirect()->route('type.index');
+    }
+    public function destroyAjax(Type $type)
+    {
+        $type->delete();
+
+        $success_array = array(
+            'successMessage' => "Type deleted successfuly". $type->id,
+        );
+
+        // 
+        $json_response =response()->json($success_array);
+
+        return $json_response;
     }
 }

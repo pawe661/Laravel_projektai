@@ -118,7 +118,7 @@
                     </div> 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="close-article-create-modal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <!-- <button id="close-article-create-modal" type="button" class="btn btn-secondary">Close with Javascript</button> -->
                     <button type="button" id="update-article" class="btn btn-primary">Save changes</button>
                 </div>
@@ -144,7 +144,9 @@
             <td class="col-article-description">{{$article->description}}</td>
             <td class="col-article-type">{{$article->articleType->title}}</td>
             <td>
-            <button class="delete-article btn btn-danger " type="submit" data-articleID="{{$article->id}}">DELETE</button>
+            <button class="delete-article btn btn-danger " type="submit" data-articleID="{{$article->id}}">
+                DELETE
+            </button>
             <button type="button" class="show-article btn btn-primary" data-bs-toggle="modal" data-bs-target="#showArticleModal" data-articleID="{{$article->id}}">
                 Show
             </button>
