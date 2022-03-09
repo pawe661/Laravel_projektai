@@ -113,7 +113,7 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTypeRequest $request, Type $type)
+    public function update(Request $request, Type $type)
     {
         //
     }
@@ -124,7 +124,7 @@ class TypeController extends Controller
 
         $type->save();
 
-        $$type_array = array(
+        $type_array = array(
             'successMessage' => "Type stored succesfuly",
             'typeID' => $type->id,
             'typeTitle' => $type->title,
@@ -149,11 +149,21 @@ class TypeController extends Controller
     }
     public function destroyAjax(Type $type)
     {
-        $type->delete();
+        //sitoje zinuteje pvz gali apsirasyti if
+        
+        if(count($type->typeArticles) > 0) {
+            $success_array = array(
+                'successMessage' => "Type cannot be deleted ". $type->id . " because it has articles",
+                'logicTest' => false
+            );
+        } else {
+            $type->delete();
 
-        $success_array = array(
-            'successMessage' => "Type deleted successfuly". $type->id,
-        );
+            $success_array = array(
+                'successMessage' => "Type deleted successfuly". $type->id,
+                'logicTest' => true
+            );
+        }
 
         // 
         $json_response =response()->json($success_array);

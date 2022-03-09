@@ -105,13 +105,13 @@
             <td class="col-type-title">{{$type->title}}</td>
             <td class="col-type-description">{{$type->description}}</td>
             <td>
-                <button class="delete-type btn btn-danger " type="submit" data-typeid="{{$type->id}}">
+                <button class="delete-type btn btn-danger " type="submit" data-typeID="{{$type->id}}">
                     DELETE
                 </button>
-                <button type="button" class="show-type btn btn-primary" data-bs-toggle="modal" data-bs-target="#showTypeModal" data-typeid="{{$type->id}}">
+                <button type="button" class="show-type btn btn-primary" data-bs-toggle="modal" data-bs-target="#showTypeModal" data-typeID="{{$type->id}}">
                     Show
                 </button>
-                <button type="button" class="edit-type btn btn-secondary " data-bs-toggle="modal" data-bs-target="#editTypeModal" data-typeid="{{$type->id}}">
+                <button type="button" class="edit-type btn btn-secondary " data-bs-toggle="modal" data-bs-target="#editTypeModal" data-typeID="{{$type->id}}">
                     Edit
                 </button>
             </td>
@@ -119,15 +119,15 @@
         @endforeach
     </table> 
   
-    <table class="template">
+    <table class="template d-none">
         <tr>
           <td class="col-type-id"></td>
           <td class="col-type-title"></td>
           <td class="col-type-description"></td>
           <td>
-            <button class="btn btn-danger delete-type" type="submit" data-typeid="">DELETE</button>
-            <button type="button" class="btn btn-primary show-type" data-bs-toggle="modal" data-bs-target="#showTypeModal" data-typeid="">Show</button>
-            <button type="button" class="btn btn-secondary edit-type" data-bs-toggle="modal" data-bs-target="#editTypeModal" data-typeid="">Edit</button>
+            <button class="btn btn-danger delete-type" type="submit" data-typeID="">DELETE</button>
+            <button type="button" class="btn btn-primary show-type" data-bs-toggle="modal" data-bs-target="#showTypeModal" data-typeID="">Show</button>
+            <button type="button" class="btn btn-secondary edit-type" data-bs-toggle="modal" data-bs-target="#editTypeModal" data-typeID="">Edit</button>
           </td>
         </tr>  
     </table>  
@@ -141,24 +141,26 @@
         }
     });
     $(document).ready(function() {
-        function createRow(typeId, typeTitle, typeDescription ) {
+        function createRow(typeID, typeTitle, typeDescription ) {
+            console.log(typeID);
                     let html
-                    html += "<tr class='type"+typeId+"'>";
-                    html += "<td>"+typeId+"</td>";    
+                    html += "<tr class='type"+typeID+"'>";
+                    html += "<td>"+typeID+"</td>";    
                     html += "<td>"+typeTitle+"</td>";  
                     html += "<td>"+typeDescription+"</td>";  
                     html += "<td>";
-                    html +=  "<button class='btn btn-danger delete-type' type='submit' data-typeid='"+typeId+"'>DELETE</button>"; 
+                    html +=  "<button class='btn btn-danger delete-type' type='submit' data-typeID='"+typeID+"'>DELETE</button>"; 
                     html +=  "</td>";
                     html += "</tr>";
                    return html 
         }
-        function createRowFromHtml(typeId, typeTitle, typeDescription) {
-          $(".template tr").addClass("type"+typeId);
-          $(".template .delete-type").attr('data-typeid', typeId );
-          $(".template .show-type").attr('data-typeid', typeId );
-          $(".template .edit-type").attr('data-typeid', typeId );
-          $(".template .col-type-id").html(typeId );
+        function createRowFromHtml(typeID, typeTitle, typeDescription) {
+          $(".template tr").addClass("type"+typeID);
+          $(".template tr").removeClass("d-none");
+          $(".template .delete-type").attr('data-typeID', typeID );
+          $(".template .show-type").attr('data-typeID', typeID );
+          $(".template .edit-type").attr('data-typeID', typeID );
+          $(".template .col-type-id").html(typeID );
           $(".template .col-type-title").html(typeTitle );
           $(".template .col-type-description").html(typeDescription );
           
@@ -180,7 +182,7 @@
                 success: function(data) {
                     let html;
                     
-                    html = createRowFromHtml(data.typeId, data.typeTitle, data.typeDescription);
+                    html = createRowFromHtml(data.typeID, data.typeTitle, data.typeDescription);
                     $("#types-table").append(html);
                     $("#createTypeModal").hide();
                     $('body').removeClass('modal-open');
@@ -203,57 +205,67 @@
                 type: 'POST',// formoje method POST GET
                 url: '/types/deleteAjax/' + typeID  ,// formoje action
                 success: function(data) {
-                   console.log(data);
-                   $('.type'+typeID).remove();
+                   
+                   //tik dabar ir sitoje vietoje reiktu sugalvot if'a kaip patikrinti ar negautas error
+                   //is controllerio, pradzioje pamegink pats, jei nepavyks parodysiu
+                   if (data.logicTest == true) {
+                    console.log('testtt');
+                    $('.type'+typeID).remove();
                     $("#alert").removeClass("d-none");
-                    $("#alert").html(data.successMessage);                    
+                    $("#alert").html(data.successMessage); 
+                   }else {
+                    $("#alert").removeClass("d-none");
+                    $("#alert").html(data.successMessage);  
+                   }                   
                 }
             });
         });
         $(document).on('click', '.show-type', function() {
-            let typeid;
-            typeid = $(this).attr('data-typeid');
-            console.log(typeid);
+            let typeID;
+            typeID = $(this).attr('data-typeID');
+            console.log(typeID);
             $.ajax({
                 type: 'GET',// formoje method POST GET
-                url: '/types/showAjax/' + typeid  ,// formoje action
+                url: '/types/showAjax/' + typeID  ,// formoje action
                 success: function(data) {
-                   $('.show-type-id').html(data.typeId);                   
+                   $('.show-type-id').html(data.typeID);                   
                    $('.show-type-title').html(data.typeTitle);                          
                    $('.show-type-description').html(data.typeDescription);                                  
                 }
             });
         });
         $(document).on('click', '.edit-type', function() {
-          let typeid;
-          typeid = $(this).attr('data-typeid');
-            console.log("edit1");
+          let typeID;
+          typeID = $(this).attr('data-typeID');
+            
             $.ajax({
                 type: 'GET',// formoje method POST GET
-                url: '/types/showAjax/' + typeid  ,// formoje action
+                url: '/types/showAjax/' + typeID  ,// formoje action
                 success: function(data) {
-                    console.log("edit2");
-                  $('#edit_type_id').val(data.typeId);                   
+                    
+                  $('#edit_type_id').val(data.typeID);                   
                    $('#edit_type_title').val(data.typeTitle);                                     
-                   $('#edit_type_description').val(data.typeDescription);                                  
+                   $('#edit_type_description').val(data.typeDescription);   
+                                                 
                 }
             });
         });
-        $(document).on('click', '.update-type', function() {
-            let typeid;
+        $(document).on('click', '#update-type', function() {
+            let typeID;
             let type_title;
             let type_description;
-            typeid = $('#edit_type_id').val();
+            typeID = $('#edit_type_id').val();
             type_title = $('#edit_type_title').val();
           type_description = $('#edit_type_description').val();
+          console.log("edit3");
           $.ajax({
                 type: 'POST',// formoje method POST GET
-                url: '/types/updateAjax/' + typeid  ,// formoje action
+                url: '/types/updateAjax/' + typeID  ,// formoje action
                 data: {type_title: type_title, type_description: type_description  },
                 success: function(data) {
                   
-                  $(".type"+typeid+ " " + ".col-type-title").html(data.typeTitle)
-                  $(".type"+typeid+ " " + ".col-type-description").html(data.typeDescription)
+                  $(".type"+typeID+ " " + ".col-type-title").html(data.typeTitle)
+                  $(".type"+typeID+ " " + ".col-type-description").html(data.typeDescription)
                   
                     $("#alert").removeClass("d-none");
                     $("#alert").html(data.successMessage);
