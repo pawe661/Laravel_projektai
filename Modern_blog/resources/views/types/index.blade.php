@@ -293,18 +293,36 @@
         
 
         // search function
-          $(document).on('input', '#searchValue', function() {
+          $(document).on('keyup', '#searchValue', function() {
           
           let searchValue = $('#searchValue').val();
           let searchFieldCount= searchValue.length;
           if(searchFieldCount == 0) {
             console.log("Field is empty");
+            console.log("Field is empty");
             $(".search-feedback").css('display', 'block');
             $(".search-feedback").html("Field is empty");
+            
+            $.ajax({
+                type: 'GET',
+                url: '{{route("type.searchAjax")}}'  ,
+                data: {searchValue: searchValue},
+                success: function(data) {
+                  $("#types-table").show();
+                  $("#types-table tbody").html('');
+                    // atliekamas ciklas
+                     $.each(data.types, function(key, type) {
+                          let html;
+                          html = createRowFromHtml(type.id, type.title, type.description);
+                          $("#types-table tbody").append(html);
+                     }); 
+                    }
+                  })
           } else if (searchFieldCount != 0 && searchFieldCount< 3 ) {
             console.log("Min 3");
             $(".search-feedback").css('display', 'block');
             $(".search-feedback").html("Min 3");
+            $("#types-table").show();
           } else {
             $(".search-feedback").css('display', 'none');
           console.log(searchFieldCount);
@@ -314,6 +332,7 @@
                 url: '{{route("type.searchAjax")}}'  ,
                 data: {searchValue: searchValue},
                 success: function(data) {
+                  console.log(data.types); 
                   if($.isEmptyObject(data.errorMessage)) {
                     //sekmes atvejis
                     $("#types-table").show();
@@ -324,7 +343,8 @@
                           let html;
                           html = createRowFromHtml(type.id, type.title, type.description);
                           $("#types-table tbody").append(html);
-                     });                             
+                     }); 
+                                                
                   } else {
                         $("#types-table").hide();
                         $('#alert').removeClass('alert-success');

@@ -173,13 +173,18 @@ class TypeController extends Controller
     public function searchAjax(Request $request) {
 
         $searchValue = $request->searchValue;
-
+        $typesAll = Type::all();
         $types = Type::query()
         ->where('title', 'like', "%{$searchValue}%")
         ->orWhere('description', 'like', "%{$searchValue}%")
         ->get();
 
-        if(count($types) > 0) {
+        
+        if(empty($searchValue)){   
+            $types_array = array(
+                'types' => $typesAll
+            );
+        }elseif(count($types) > 0) {
             $types_array = array(
                 'types' => $types
             );
