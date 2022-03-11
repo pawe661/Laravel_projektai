@@ -10,6 +10,12 @@
       Create Type
     </button>
 
+    <!-- Search field -->
+    <div class="searchAjaxForm">
+      <input id="searchValue" type="text">
+      <span class="search-feedback"></span>
+    </div>  
+
     <!-- Modal -->
     <!-- Create -->
     <div class="modal fade" id="createTypeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -38,7 +44,7 @@
         </div>
       </div>
     </div>
- <!-- Edit -->
+    <!-- Edit -->
     <div class="modal fade" id="editTypeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -66,7 +72,7 @@
         </div>
       </div>
     </div>
-<!-- Show -->
+    <!-- Show -->
     <div class="modal fade" id="showTypeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -93,12 +99,15 @@
     </div>    
 
     <table id="types-table" class="table table-striped">
+      <thead>
         <tr>
             <th>Id</th>
             <th>Title</th>
             <th>Discription</th>
             <th>Action</th>
         </tr>
+      </thead>
+      <tbody>
         @foreach ($types as $type) 
         <tr class="type{{$type->id}}">
             <td class="col-type-id">{{$type->id}}</td>
@@ -117,6 +126,7 @@
             </td>
         </tr>
         @endforeach
+      </tbody>
     </table> 
   
     <table class="template d-none">
@@ -164,11 +174,9 @@
           $(".template .col-type-title").html(typeTitle );
           $(".template .col-type-description").html(typeDescription );
           
-          
-          
           return $(".template tbody").html();
         }
-    
+        // Create
         $("#submit-ajax-form").click(function() {
             let type_title;
             let type_description;
@@ -196,7 +204,7 @@
                 }
             });
         });
-
+          // Delete
           $(document).on('click', '.delete-type', function() {
             let typeID;
             typeID = $(this).attr('data-typeID');
@@ -220,6 +228,8 @@
                 }
             });
         });
+
+        // show
         $(document).on('click', '.show-type', function() {
             let typeID;
             typeID = $(this).attr('data-typeID');
@@ -234,6 +244,8 @@
                 }
             });
         });
+
+        // Edit display info
         $(document).on('click', '.edit-type', function() {
           let typeID;
           typeID = $(this).attr('data-typeID');
@@ -250,6 +262,7 @@
                 }
             });
         });
+        // Update after edit
         $(document).on('click', '#update-type', function() {
             let typeID;
             let type_title;
@@ -277,6 +290,52 @@
                 }
             });
         })
+        
+
+        // search function
+          $(document).on('input', '#searchValue', function() {
+          
+          let searchValue = $('#searchValue').val();
+          let searchFieldCount= searchValue.length;
+          if(searchFieldCount == 0) {
+            console.log("Field is empty");
+            $(".search-feedback").css('display', 'block');
+            $(".search-feedback").html("Field is empty");
+          } else if (searchFieldCount != 0 && searchFieldCount< 3 ) {
+            console.log("Min 3");
+            $(".search-feedback").css('display', 'block');
+            $(".search-feedback").html("Min 3");
+          } else {
+            $(".search-feedback").css('display', 'none');
+          console.log(searchFieldCount);
+          console.log(searchValue);
+          $.ajax({
+                type: 'GET',
+                url: '{{route("type.searchAjax")}}'  ,
+                data: {searchValue: searchValue},
+                success: function(data) {
+                  if($.isEmptyObject(data.errorMessage)) {
+                    //sekmes atvejis
+                    $("#types-table").show();
+                    $("#alert").addClass("d-none");
+                    $("#types-table tbody").html('');
+                    // atliekamas ciklas
+                     $.each(data.types, function(key, type) {
+                          let html;
+                          html = createRowFromHtml(type.id, type.title, type.description);
+                          $("#types-table tbody").append(html);
+                     });                             
+                  } else {
+                        $("#types-table").hide();
+                        $('#alert').removeClass('alert-success');
+                        $('#alert').addClass('alert-danger');
+                        $("#alert").removeClass("d-none");
+                        $("#alert").html(data.errorMessage); 
+                  }                            
+                }
+            });
+          }
+        });
     })
 </script>
 

@@ -41,4 +41,5 @@ Route::prefix('types')->group(function() {
     Route::post('deleteAjax/{type}', 'App\Http\Controllers\TypeController@destroyAjax')->name('type.destroyAjax');
     Route::get('showAjax/{type}', 'App\Http\Controllers\TypeController@showAjax')->name('type.showAjax');
     Route::post('updateAjax/{type}', 'App\Http\Controllers\TypeController@updateAjax')->name('type.updateAjax');
+    Route::get('searchAjax', 'App\Http\Controllers\TypeController@searchAjax')->name('type.searchAjax');
 });
