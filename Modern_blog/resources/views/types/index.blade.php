@@ -149,6 +149,7 @@ th div {
   
     <table class="template d-none">
         <tr>
+          <td><input type="checkbox" class="checkbox" data-typeID=""></td>
           <td class="col-type-id"></td>
           <td class="col-type-title"></td>
           <td class="col-type-description"></td>
@@ -173,6 +174,7 @@ th div {
             console.log(typeID);
                     let html
                     html += "<tr class='type"+typeID+"'>";
+                    html += "<td><input type='checkbox' class='checkbox' data-typeID='"+typeID+"'></td>";
                     html += "<td>"+typeID+"</td>";    
                     html += "<td>"+typeTitle+"</td>";  
                     html += "<td>"+typeDescription+"</td>";  
@@ -184,16 +186,6 @@ th div {
         }
 
         function createRowFromHtml(typeID, typeTitle, typeDescription) {
-
-          // pirma remove attr, tik tada add CLass
-          // Supratau, o dar dėl sort
-          // KOdėl ten du kartus tenka paspausti?
-          //del numatytosios reiksmes
-          //pirmo uzsikrovimo metu yra id ir asc mygtuko atributuose, todel pirmas paspaudimas
-          //isrikiuo id ir asc, nors jau ir taip isrikiuota
-          //del to susidaro ispudis kad du kartus reikia spaust
-          // ok ištaisysiu tada
-          //tiesiog paciame mygtuke padaryk taip
           $(".template tr").removeAttr("class");
           $(".template tr").addClass("type"+typeID);
         
@@ -272,7 +264,7 @@ th div {
                     $("#alert").html(data.successMessage); 
                    }else {
                     $("#alert").removeClass("d-none");
-                    $("#alert").html(data.successMessage);  
+                    $("#alert").html(data.errorMessage);  
                    }                   
                 }
             });
@@ -296,11 +288,16 @@ th div {
           }
         });
 
+
+        //ajax uzklausoje nepersiunti id, jie turi eiti per data
           $('.delete-all').on('click', function(e) {
             var idsArr = [];  
             $(".checkbox:checked").each(function() {  
               idsArr.push($(this).attr('data-typeID'));
-            });  
+              
+            });
+            
+            // idsArr=idsArr.toString();
             if(idsArr.length <=0){  
               alert("Please select atleast one record to delete.");  
             }else {  
@@ -309,20 +306,23 @@ th div {
                 console.log(typeID);//key = input id
                 $.ajax({
                   type: 'POST',
-                  url: '/types/massdeleteAjax/' + typeID  ,// formoje action
+                  url: '/types/massdeleteAjax', //+ typeID  ,// formoje action
+                  data: {type: typeID}, 
                   success: function(data) {
-
-                    if (data['status']==true) {
+                    if (data.logicTest == true) {
                       $(".checkbox:checked").each(function() {  
                         $(this).parents("tr").remove();
                         $('.type'+typeID).remove();
                         $("#alert").removeClass("d-none");
-                        $("#alert").html(data.message); 
+                        $("#alert").html(data.successMessage); 
                       });
-                    } else {
-                          
-                      alert('Whoops Something went wrong!!');
-                    }
+                   }else {
+                    $("#alert").removeClass("d-none");
+                    $("#alert").html(data.errorMessage);  
+                   }               
+                   
+                      
+                   
                   },
                   error: function (data) {
                   alert(data.responseText);

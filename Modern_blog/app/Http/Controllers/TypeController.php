@@ -201,40 +201,55 @@ class TypeController extends Controller
         //sitoje zinuteje pvz gali apsirasyti if
         
         if(count($type->typeArticles) > 0) {
-            $success_array = array(
-                'successMessage' => "Type cannot be deleted ". $type->id . " because it has articles",
+            $response_array = array(
+                'errorMessage' => "Type cannot be deleted ". $type->id . " because it has articles",
                 'logicTest' => false
             );
         } else {
             $type->delete();
 
-            $success_array = array(
+            $response_array = array(
                 'successMessage' => "Type deleted successfuly". $type->id,
                 'logicTest' => true
             );
         }
 
         // 
-        $json_response =response()->json($success_array);
+        $json_response =response()->json($response_array);
 
         return $json_response;
     }
-    public function massdestroyAjax(Request $request, Type $types)
+
+    // sito type neturi buuti kuris skliausteliuose
+    public function massdestroyAjax(Request $request)
     {
-        
-        
         $ids = $request->type;
-        // $ids = explode(",", $ids);
-
-        //     foreach ($ids as $id) {
-
-        //     Type::where("id", $id)->delete();
-
-        //     }   
-        Type::whereIn('id',explode(",",$ids))->delete();
         
-        return response()->json(['ids'=>$ids, 'status'=>true,'message'=>"Category deleted successfully."]);
+        // dd($ids);
+        $ids_array = explode(",", $ids);
+        
+        $types = Type::whereIn('id',$ids_array)->get();
+        $errorMessage=[];
+        $successMessage=[];
+        foreach ($types as $i => $type) {
+           
+            if(count($type->typeArticles) > 0) {
+                $response_array= [
+                    $errorMessage[$i] => "Type cannot be deleted because ".$ids ."it has articles",
+                    'logicTest' => false
+                ];
+            } else {
+                $type->delete();
+                $response_array = [
+                    $successMessage[$i] => "Type deleted successfuly". $type->id,
+                           'logicTest' => true
+                ];
+            }
+        }
          
+        $json_response =response()->json($response_array);
+
+        return $json_response;
     }
     public function searchAjax(Request $request) {
 
