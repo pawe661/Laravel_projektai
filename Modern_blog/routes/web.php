@@ -39,7 +39,9 @@ Route::prefix('types')->group(function() {
     Route::post('storeAjax', 'App\Http\Controllers\TypeController@storeAjax')->name('type.storeAjax');
     Route::post('delete/{type}', 'App\Http\Controllers\TypeController@destroy')->name('type.destroy');
     Route::post('deleteAjax/{type}', 'App\Http\Controllers\TypeController@destroyAjax')->name('type.destroyAjax');
+    Route::post('massdeleteAjax/{type}', 'App\Http\Controllers\TypeController@massdestroyAjax')->name('type.massdestroyAjax');
     Route::get('showAjax/{type}', 'App\Http\Controllers\TypeController@showAjax')->name('type.showAjax');
     Route::post('updateAjax/{type}', 'App\Http\Controllers\TypeController@updateAjax')->name('type.updateAjax');
     Route::get('searchAjax', 'App\Http\Controllers\TypeController@searchAjax')->name('type.searchAjax');
+    Route::get('indexAjax', 'App\Http\Controllers\TypeController@indexAjax')->name('type.indexAjax');
 });

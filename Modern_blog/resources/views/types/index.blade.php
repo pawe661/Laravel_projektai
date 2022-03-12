@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-
+<style>
+th div {
+  cursor: pointer;
+  color: blue;
+}
+</style>  
 <div class="container">
 
 
@@ -16,6 +21,13 @@
       <span class="search-feedback"></span>
     </div>  
 
+    <!-- Sort -->
+    <input id="hidden-sort" type="hidden" value="id" />
+    <input id="hidden-direction" type="hidden" value="asc" />
+
+    <!-- Mass delete -->
+    <button type="button" class="btn btn-danger delete-all" data-url="">Delete All</button>
+
     <!-- Modal -->
     <!-- Create -->
     <div class="modal fade" id="createTypeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -29,11 +41,15 @@
             <div class="ajaxForm">
                 <div class="form-group">
                         <label for="type_title">Type Title</label>
-                        <input id="type_title" class="form-control" type="text" name="type_title" />
+                        <input id="type_title" class="form-control create-input" type="text" name="type_title" />
+                        <span class="invalid-feedback input_type_title">
+                      </span>
                 </div>
                 <div class="form-group">
                         <label for="type_description">Type Description</label>
-                        <input id="type_description" class="form-control" type="text" name="type_description" />
+                        <input id="type_description" class="form-control create-input" type="text" name="type_description" />
+                        <span class="invalid-feedback input_type_description">
+                        </span> 
                 </div>
             </div> 
           </div>
@@ -101,15 +117,17 @@
     <table id="types-table" class="table table-striped">
       <thead>
         <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Discription</th>
-            <th>Action</th>
+          <th><input type="checkbox" id="check_all"></th>
+          <th><div class="types-sort" data-sort="id" data-direction="desc">Id</div></th>
+          <th><div class="types-sort"  data-sort="title" data-direction="desc">Title</div></th>
+          <th><div class="types-sort" data-sort="description" data-direction="desc">Description</div></th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         @foreach ($types as $type) 
         <tr class="type{{$type->id}}">
+            <td><input type="checkbox" class="checkbox" data-typeID="{{$type->id}}"></td>
             <td class="col-type-id">{{$type->id}}</td>
             <td class="col-type-title">{{$type->title}}</td>
             <td class="col-type-description">{{$type->description}}</td>
@@ -164,9 +182,21 @@
                     html += "</tr>";
                    return html 
         }
+
         function createRowFromHtml(typeID, typeTitle, typeDescription) {
+
+          // pirma remove attr, tik tada add CLass
+          // Supratau, o dar dėl sort
+          // KOdėl ten du kartus tenka paspausti?
+          //del numatytosios reiksmes
+          //pirmo uzsikrovimo metu yra id ir asc mygtuko atributuose, todel pirmas paspaudimas
+          //isrikiuo id ir asc, nors jau ir taip isrikiuota
+          //del to susidaro ispudis kad du kartus reikia spaust
+          // ok ištaisysiu tada
+          //tiesiog paciame mygtuke padaryk taip
+          $(".template tr").removeAttr("class");
           $(".template tr").addClass("type"+typeID);
-          $(".template tr").removeClass("d-none");
+        
           $(".template .delete-type").attr('data-typeID', typeID );
           $(".template .show-type").attr('data-typeID', typeID );
           $(".template .edit-type").attr('data-typeID', typeID );
@@ -180,18 +210,31 @@
         $("#submit-ajax-form").click(function() {
             let type_title;
             let type_description;
+            let sort;
+            let direction;
             type_title = $('#type_title').val();
             type_description = $('#type_description').val();
+            sort = $('#hidden-sort').val();
+            direction = $('#hidden-direction').val();
            
             $.ajax({
                 type: 'POST',// formoje method POST GET
                 url: '{{route("type.storeAjax")}}' ,// formoje action
-                data: {type_title: type_title, type_description: type_description  },
+                data: {type_title: type_title, type_description: type_description,sort:sort, direction:direction  },
                 success: function(data) {
                     let html;
-                    
-                    html = createRowFromHtml(data.typeID, data.typeTitle, data.typeDescription);
-                    $("#types-table").append(html);
+                    //sekmes atvejis
+                    if($.isEmptyObject(data.errorMessage)) {
+                      
+                      
+                      $("#types-table tbody").html('');
+                     $.each(data.types, function(key, type) {
+                          let html;
+                          html = createRowFromHtml(type.id, type.title, type.description);
+                          // console.log(html)
+                          $("#types-table tbody").append(html);
+                     });
+
                     $("#createTypeModal").hide();
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
@@ -200,24 +243,30 @@
                     $("#alert").html(data.successMessage +" " + data.typeTitle);
                     $('#type_title').val('');
                     $('#type_description').val('');
+                  } else {
+                    $('.create-input').removeClass('is-invalid');
+                      $('.invalid-feedback').html('');
+                      $.each(data.errors, function(key, error) {
+                        
+                        $('#'+key).addClass('is-invalid');
+                        $('.input_'+key).html("<strong>"+error+"</strong>");
+                      });
+                    }
+                  
                     
                 }
             });
         });
           // Delete
-          $(document).on('click', '.delete-type', function() {
+        $(document).on('click', '.delete-type', function() {
             let typeID;
             typeID = $(this).attr('data-typeID');
-            console.log(typeID);
             $.ajax({
                 type: 'POST',// formoje method POST GET
                 url: '/types/deleteAjax/' + typeID  ,// formoje action
                 success: function(data) {
                    
-                   //tik dabar ir sitoje vietoje reiktu sugalvot if'a kaip patikrinti ar negautas error
-                   //is controllerio, pradzioje pamegink pats, jei nepavyks parodysiu
                    if (data.logicTest == true) {
-                    console.log('testtt');
                     $('.type'+typeID).remove();
                     $("#alert").removeClass("d-none");
                     $("#alert").html(data.successMessage); 
@@ -228,7 +277,62 @@
                 }
             });
         });
+        // mass delete
+          // pažymi visus
+        $('#check_all').on('click', function(e) {
+          if($(this).is(':checked',true)){
+            $(".checkbox").prop('checked', true);  
+          } else {  
+            $(".checkbox").prop('checked',false);  
+          }  
+        }); 
 
+          //jeigu visi checkbox pazymeti tada pažymi check_all
+        $('.checkbox').on('click',function(){
+          if($('.checkbox:checked').length == $('.checkbox').length){
+            $('#check_all').prop('checked',true);
+          }else{
+            $('#check_all').prop('checked',false);
+          }
+        });
+
+          $('.delete-all').on('click', function(e) {
+            var idsArr = [];  
+            $(".checkbox:checked").each(function() {  
+              idsArr.push($(this).attr('data-typeID'));
+            });  
+            if(idsArr.length <=0){  
+              alert("Please select atleast one record to delete.");  
+            }else {  
+                
+                var typeID = idsArr.join(","); 
+                console.log(typeID);//key = input id
+                $.ajax({
+                  type: 'POST',
+                  url: '/types/massdeleteAjax/' + typeID  ,// formoje action
+                  success: function(data) {
+
+                    if (data['status']==true) {
+                      $(".checkbox:checked").each(function() {  
+                        $(this).parents("tr").remove();
+                        $('.type'+typeID).remove();
+                        $("#alert").removeClass("d-none");
+                        $("#alert").html(data.message); 
+                      });
+                    } else {
+                          
+                      alert('Whoops Something went wrong!!');
+                    }
+                  },
+                  error: function (data) {
+                  alert(data.responseText);
+                  }
+                  });
+                  }  
+                  
+                  });
+                  
+                  
         // show
         $(document).on('click', '.show-type', function() {
             let typeID;
@@ -291,9 +395,8 @@
             });
         })
         
-
         // search function
-          $(document).on('keyup', '#searchValue', function() {
+        $(document).on('keyup', '#searchValue', function() {
           
           let searchValue = $('#searchValue').val();
           let searchFieldCount= searchValue.length;
@@ -327,34 +430,67 @@
             $(".search-feedback").css('display', 'none');
           console.log(searchFieldCount);
           console.log(searchValue);
-          $.ajax({
-                type: 'GET',
-                url: '{{route("type.searchAjax")}}'  ,
-                data: {searchValue: searchValue},
-                success: function(data) {
-                  console.log(data.types); 
-                  if($.isEmptyObject(data.errorMessage)) {
-                    //sekmes atvejis
-                    $("#types-table").show();
-                    $("#alert").addClass("d-none");
-                    $("#types-table tbody").html('');
-                    // atliekamas ciklas
-                     $.each(data.types, function(key, type) {
-                          let html;
-                          html = createRowFromHtml(type.id, type.title, type.description);
-                          $("#types-table tbody").append(html);
-                     }); 
-                                                
-                  } else {
-                        $("#types-table").hide();
-                        $('#alert').removeClass('alert-success');
-                        $('#alert').addClass('alert-danger');
-                        $("#alert").removeClass("d-none");
-                        $("#alert").html(data.errorMessage); 
-                  }                            
-                }
+            $.ajax({
+                  type: 'GET',
+                  url: '{{route("type.searchAjax")}}'  ,
+                  data: {searchValue: searchValue},
+                  success: function(data) {
+                    console.log(data.types); 
+                    if($.isEmptyObject(data.errorMessage)) {
+                      //sekmes atvejis
+                      $("#types-table").show();
+                      $("#alert").addClass("d-none");
+                      $("#types-table tbody").html('');
+                      // atliekamas ciklas
+                      $.each(data.types, function(key, type) {
+                            let html;
+                            html = createRowFromHtml(type.id, type.title, type.description);
+                            $("#types-table tbody").append(html);
+                      }); 
+                                                  
+                    } else {
+                          $("#types-table").hide();
+                          $('#alert').removeClass('alert-success');
+                          $('#alert').addClass('alert-danger');
+                          $("#alert").removeClass("d-none");
+                          $("#alert").html(data.errorMessage); 
+                    }                            
+                  }
             });
           }
+        });
+
+        //Sort
+        $('.types-sort').click(function() {
+          let sort;
+          let direction;
+          sort = $(this).attr('data-sort');
+          direction = $(this).attr('data-direction');
+          $("#hidden-sort").val(sort);
+          $("#hidden-direction").val(direction);
+          if(direction == 'asc') {
+            $(this).attr('data-direction', 'desc');
+          } else {
+            $(this).attr('data-direction', 'asc');
+          }
+          $.ajax({
+                type: 'GET',// formoje method POST GET
+                url: '{{route("type.indexAjax")}}'  ,// formoje action
+                data: {sort: sort, direction: direction },
+                success: function(data) {
+                  // data
+                  console.log(data.types);
+                    $("#types-table tbody").html('');
+                     $.each(data.types, function(key, type) {
+
+                          let html;
+                          html = createRowFromHtml(type.id, type.title, type.description);
+                          // console.log(html)
+                          $("#types-table tbody").append(html);
+                     });
+                  //mygtuku rikiavimui
+                }
+            });
         });
     })
 </script>

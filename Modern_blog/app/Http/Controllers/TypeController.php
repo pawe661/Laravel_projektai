@@ -6,6 +6,8 @@ use App\Models\Type;
 use App\Http\Requests\StoreTypeRequest;
 use App\Http\Requests\UpdateTypeRequest;
 use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Validator;
+use Validator;
 
 class TypeController extends Controller
 {
@@ -21,6 +23,20 @@ class TypeController extends Controller
     
     }
 
+    public function indexAjax() {
+
+
+        $types = Type::sortable()->get();
+
+
+        $types_array = array(
+            'types' => $types
+        );
+
+        $json_response =response()->json($types_array); 
+
+        return $json_response;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -51,6 +67,31 @@ class TypeController extends Controller
 
     public function storeAjax(Request $request) {
 
+
+        $input = [
+            'type_title'=> $request->type_title,
+            'type_description'=> $request->type_description,
+
+        ];
+
+        $rules = [
+            'type_title'=> 'required|string|max:16',
+            'type_description'=> 'required|min:10',
+        ];
+
+        $customMessages = [
+            'required' => "This field is required"
+        ];
+
+        $validator = Validator::make($input, $rules);
+
+        if($validator->fails()) {
+            $errors = $validator->messages()->get('*'); //pasiima visu ivykusiu klaidu sarasa
+            $type_array = array(
+                'errorMessage' => "validator fails",
+                'errors' => $errors
+            );
+        } else {
         $type = new Type();
 
         $type->title = $request->type_title;
@@ -58,13 +99,21 @@ class TypeController extends Controller
 
         $type->save();
 
+        $sort = $request->sort ;
+        $direction = $request->direction ;
+
+        $types = Type::sortable([$sort => $direction ])->get();
+
         $type_array = array(
             'successMessage' => "Type stored succesfuly",
             'typeID' => $type->id,
             'typeTitle' => $type->title,
             'typeDescription' => $type->description,
+            'types' => $types
 
         );
+        }
+        
 
         // 
         $json_response =response()->json($type_array); //javascript masyvas
@@ -169,6 +218,23 @@ class TypeController extends Controller
         $json_response =response()->json($success_array);
 
         return $json_response;
+    }
+    public function massdestroyAjax(Request $request, Type $types)
+    {
+        
+        
+        $ids = $request->type;
+        // $ids = explode(",", $ids);
+
+        //     foreach ($ids as $id) {
+
+        //     Type::where("id", $id)->delete();
+
+        //     }   
+        Type::whereIn('id',explode(",",$ids))->delete();
+        
+        return response()->json(['ids'=>$ids, 'status'=>true,'message'=>"Category deleted successfully."]);
+         
     }
     public function searchAjax(Request $request) {
 
