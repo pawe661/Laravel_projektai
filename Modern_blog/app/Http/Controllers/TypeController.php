@@ -231,13 +231,15 @@ class TypeController extends Controller
         $types = Type::whereIn('id',$ids_array)->get();
         $errorMessage=[];
         $successMessage=[];
+         //    to be fixed
         foreach ($types as $i => $type) {
-           
+        //    to be fixed
             if(count($type->typeArticles) > 0) {
                 $response_array= [
                     $errorMessage[$i] => "Type cannot be deleted because ".$ids ."it has articles",
                     'logicTest' => false
                 ];
+                 //    to be fixed
             } else {
                 $type->delete();
                 $response_array = [

@@ -160,7 +160,7 @@ th div {
           </td>
         </tr>  
     </table>  
-    
+    <a class="btn btn-secondary" href="{{route('nav')}}">Back to nav</a> 
 </div>
 
 <script>
@@ -401,7 +401,6 @@ th div {
           let searchValue = $('#searchValue').val();
           let searchFieldCount= searchValue.length;
           if(searchFieldCount == 0) {
-            console.log("Field is empty");
             console.log("Field is empty");
             $(".search-feedback").css('display', 'block');
             $(".search-feedback").html("Field is empty");

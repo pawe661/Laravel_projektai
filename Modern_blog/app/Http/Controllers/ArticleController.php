@@ -7,6 +7,7 @@ use App\Models\Type;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use Illuminate\Http\Request;
+use Validator;
 
 class ArticleController extends Controller
 {
@@ -23,6 +24,20 @@ class ArticleController extends Controller
         return view('articles.index', ['articles'=> $articles, 'types'=>$types]);
     }
 
+    public function indexAjax() {
+
+
+        $articles = Article::with('articleType')->sortable()->get();
+
+
+        $articles_array = array(
+            'articles' => $articles
+        );
+
+        $json_response =response()->json($articles_array); 
+
+        return $json_response;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -53,6 +68,32 @@ class ArticleController extends Controller
     }
     public function storeAjax(Request $request) {
 
+        $input = [
+            'article_title'=> $request->article_title,
+            'article_description'=> $request->article_description,
+            'article_type'=> $request->article_type,
+
+        ];
+
+        $rules = [
+            'article_title'=> 'required|string|max:16',
+            'article_description'=> 'required|min:10',
+            'article_type' => 'required|numeric|gt:0',
+        ];
+
+        $customMessages = [
+            'required' => "This field is required"
+        ];
+
+        $validator = Validator::make($input, $rules);
+
+        if($validator->fails()) {
+            $errors = $validator->messages()->get('*'); //pasiima visu ivykusiu klaidu sarasa
+            $article_array = array(
+                'errorMessage' => "validator fails",
+                'errors' => $errors
+            );
+        } else {
         $article = new Article();
 
         $article->title = $request->article_title;
@@ -61,6 +102,11 @@ class ArticleController extends Controller
 
         $article->save();
 
+        $sort = $request->sort ;
+        $direction = $request->direction ;
+
+        $articles = Article::with("articleType")->sortable([$sort => $direction ])->get();
+
         $article_array = array(
             'successMessage' => "Article stored succesfuly",
             'articleID' => $article->id,
@@ -68,8 +114,9 @@ class ArticleController extends Controller
             'articleDescription' => $article->description,
             'articleType' => $article->type_id,
             'articleTypeDisplay' => $article->articleType->title,
+            'articles' => $articles
         );
-
+        }
         // 
         $json_response =response()->json($article_array); //javascript masyvas
 
@@ -181,5 +228,62 @@ class ArticleController extends Controller
         $json_response =response()->json($success_array);
 
         return $json_response;
+    }
+
+    public function massdestroyAjax(Request $request)
+    {
+        $ids = $request->article;
+        
+        // dd($ids);
+        $ids_array = explode(",", $ids);
+        
+        $articles = Article::whereIn('id',$ids_array)->get();
+        
+        $response_array = array();
+        foreach ($articles as $key => $article) {
+        
+            $article->delete();
+            // reikia prideti kad po ciklo prisidetu po istrinta id
+            $response_array[] = array(
+                'successMessage' => "Article deleted successfuly". $article->id,
+            );
+        }
+         
+        $json_response =response()->json($response_array);
+        // dd($response_array);
+        return $json_response;
+    }
+    public function searchAjax(Request $request) {
+
+        $searchValue = $request->searchValue;
+        $articlesAll = Article::with("articleType");
+        // sugalvoti kaip čia pridėti ryšį
+        $articles = Article::query()
+        ->where('title', 'like', "%{$searchValue}%")
+        ->orWhere('description', 'like', "%{$searchValue}%")
+        // ->orWhere('typeDisplay', 'like', "%{$searchValue}%")
+        ->get();
+        
+        
+        if(empty($searchValue)){   
+            $articles_array = array(
+                'articles' => $articlesAll
+            );
+        }elseif(count($articles) > 0) {
+            $articles_array = array(
+                'articles' => $articles,
+            );
+        } else {
+            $articles_array = array(
+                'errorMessage' => 'No articles found'
+            );
+        }
+
+        
+
+        $json_response =response()->json($articles_array);
+
+        return $json_response;
+
     }
 }
