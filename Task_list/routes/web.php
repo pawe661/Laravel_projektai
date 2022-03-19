@@ -27,3 +27,11 @@ Route::prefix('tasks')->group(function() {
     Route::get('', 'App\Http\Controllers\TaskController@index')->name('task.index');
     Route::get('taskfilter', 'App\Http\Controllers\TaskController@productfilter')->name('task.taskfilter');
 });
+
+Route::prefix('paginationSettings')->group(function() {
+
+    Route::get('edit/{paginationSetting}', 'App\Http\Controllers\PaginationSettingController@edit')->name('paginationSetting.edit');
+    Route::post('update/{paginationSettingFromController}', 'App\Http\Controllers\PaginationSettingController@update')->name('paginationSetting.update');
+    Route::get('selectSetting', 'App\Http\Controllers\PaginationSettingController@selectSetting')->name('paginationSetting.selectSetting');
+    
+});

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PaginationSetting;
+use Illuminate\Http\Request;
 use App\Http\Requests\StorePaginationSettingRequest;
 use App\Http\Requests\UpdatePaginationSettingRequest;
 
@@ -58,7 +59,8 @@ class PaginationSettingController extends Controller
      */
     public function edit(PaginationSetting $paginationSetting)
     {
-        //
+        $paginationSettings = PaginationSetting::all();
+        return view('paginationSettings.edit', ['paginationSettingFromController' => $paginationSetting, 'paginationSettings'=> $paginationSettings]);
     }
 
     /**
@@ -68,9 +70,22 @@ class PaginationSettingController extends Controller
      * @param  \App\Models\PaginationSetting  $paginationSetting
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePaginationSettingRequest $request, PaginationSetting $paginationSetting)
+    public function update(Request $request, PaginationSetting $paginationSetting)
     {
-        //
+        if($request->has('title')) {
+            $paginationSetting->title = $request->pagination_settings_title;
+        }
+        if($request->has('value')) {
+            $paginationSetting->value = $request->pagination_settings_value;
+        }
+        if($request->has('visible')) {
+            $paginationSetting->visible = $request->pagination_settings_visible;
+        }
+        $paginationSetting->default_value = $request->pagination_settings_default_value;
+
+        $paginationSetting->save();
+
+        return redirect()->route('task.index');
     }
 
     /**
@@ -82,5 +97,10 @@ class PaginationSettingController extends Controller
     public function destroy(PaginationSetting $paginationSetting)
     {
         //
+    }
+    public function selectSetting()
+    {
+        $paginationSettings = PaginationSetting::all();
+        return view('paginationSettings.selectSetting', ['paginationSettings'=> $paginationSettings]);
     }
 }
